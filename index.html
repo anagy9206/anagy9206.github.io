@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -197,17 +198,20 @@
 
     <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
       <div style="background: oklch(30% 0.05 155); border-radius: 12px; padding: 28px; font-size: 15px; color: oklch(92% 0.03 155); font-weight: 600;">
-        Thanks — your message has been noted. I'll be in touch soon.
+        Thanks — your message has been sent. I'll be in touch soon.
       </div>
     </sc-if>
     <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
       <form onSubmit="{{ handleSubmit }}" style="display: grid; gap: 16px; max-width: 560px;">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-          <input type="text" placeholder="Your name" required="{{ true }}" style="padding: 13px 16px; border-radius: 8px; border: 1px solid oklch(38% 0.02 255); background: oklch(27% 0.03 255); font-size: 15px; font-family: inherit; color: oklch(96% 0.004 250);" />
-          <input type="email" placeholder="Your email" required="{{ true }}" style="padding: 13px 16px; border-radius: 8px; border: 1px solid oklch(38% 0.02 255); background: oklch(27% 0.03 255); font-size: 15px; font-family: inherit; color: oklch(96% 0.004 250);" />
+          <input type="text" name="from_name" placeholder="Your name" required="{{ true }}" style="padding: 13px 16px; border-radius: 8px; border: 1px solid oklch(38% 0.02 255); background: oklch(27% 0.03 255); font-size: 15px; font-family: inherit; color: oklch(96% 0.004 250);" />
+          <input type="email" name="reply_to" placeholder="Your email" required="{{ true }}" style="padding: 13px 16px; border-radius: 8px; border: 1px solid oklch(38% 0.02 255); background: oklch(27% 0.03 255); font-size: 15px; font-family: inherit; color: oklch(96% 0.004 250);" />
         </div>
-        <textarea placeholder="Message" required="{{ true }}" rows="5" style="padding: 13px 16px; border-radius: 8px; border: 1px solid oklch(38% 0.02 255); background: oklch(27% 0.03 255); font-size: 15px; font-family: inherit; color: oklch(96% 0.004 250); resize: vertical;"></textarea>
-        <button type="submit" style="justify-self: start; background: oklch(65% 0.16 250); color: oklch(15% 0.02 250); padding: 13px 28px; border-radius: 100px; font-size: 15px; font-weight: 700; border: none; cursor: pointer;" style-hover="background: oklch(72% 0.15 250);">Send message</button>
+        <textarea name="message" placeholder="Message" required="{{ true }}" rows="5" style="padding: 13px 16px; border-radius: 8px; border: 1px solid oklch(38% 0.02 255); background: oklch(27% 0.03 255); font-size: 15px; font-family: inherit; color: oklch(96% 0.004 250); resize: vertical;"></textarea>
+        <sc-if value="{{ sendError }}" hint-placeholder-val="{{ false }}">
+          <div style="color: oklch(78% 0.14 30); font-size: 14px; font-weight: 600;">Something went wrong sending your message — please try again or email me directly.</div>
+        </sc-if>
+        <button type="submit" disabled="{{ sending }}" style="justify-self: start; background: oklch(65% 0.16 250); color: oklch(15% 0.02 250); padding: 13px 28px; border-radius: 100px; font-size: 15px; font-weight: 700; border: none; cursor: pointer;" style-hover="background: oklch(72% 0.15 250);">{{ submitLabel }}</button>
       </form>
     </sc-if>
   </section>
@@ -220,10 +224,16 @@
 
 </x-dc>
 <script type="text/x-dc" data-dc-script>
+const EMAILJS_PUBLIC_KEY = 'z_ASmX8Z8xfjZnN77';
+const EMAILJS_SERVICE_ID = 'service_668bfdm';
+const EMAILJS_TEMPLATE_ID = 'template_8ygmu3g';
+
 class Component extends DCLogic {
-  state = { submitted: false, counts: { years: 0, engineers: 0, team: 0 } };
+  state = { submitted: false, sending: false, error: false, counts: { years: 0, engineers: 0, team: 0 } };
 
   componentDidMount() {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
     const targets = { years: 12, engineers: 3, team: 6 };
     const duration = 1300;
     const runCount = () => {
@@ -265,7 +275,23 @@ class Component extends DCLogic {
       softSkills: ['Team player', 'Communicative', 'Continuous learner', 'Attention to detail', 'Self-motivated'],
       submitted: this.state.submitted,
       notSubmitted: !this.state.submitted,
-      handleSubmit: (e) => { e.preventDefault(); this.setState({ submitted: true }); }
+      sending: this.state.sending,
+      sendError: this.state.error,
+      submitLabel: this.state.sending ? 'Sending…' : 'Send message',
+      handleSubmit: (e) => {
+        e.preventDefault();
+        const form = e.target;
+        this.setState({ sending: true, error: false });
+        emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form)
+          .then(() => {
+            form.reset();
+            this.setState({ submitted: true, sending: false });
+          })
+          .catch((err) => {
+            console.error('EmailJS send failed:', err);
+            this.setState({ sending: false, error: true });
+          });
+      }
     };
   }
 }
