@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -208,6 +209,10 @@
           <input type="email" name="reply_to" placeholder="Your email" required="{{ true }}" style="padding: 13px 16px; border-radius: 8px; border: 1px solid oklch(38% 0.02 255); background: oklch(27% 0.03 255); font-size: 15px; font-family: inherit; color: oklch(96% 0.004 250);" />
         </div>
         <textarea name="message" placeholder="Message" required="{{ true }}" rows="5" style="padding: 13px 16px; border-radius: 8px; border: 1px solid oklch(38% 0.02 255); background: oklch(27% 0.03 255); font-size: 15px; font-family: inherit; color: oklch(96% 0.004 250); resize: vertical;"></textarea>
+        <div class="g-recaptcha" data-sitekey="6Le0GmstAAAAAI9GdFKKPm4l3rxC7lPIcy4xlLXV"></div>
+        <sc-if value="{{ captchaError }}" hint-placeholder-val="{{ false }}">
+          <div style="color: oklch(78% 0.14 30); font-size: 14px; font-weight: 600;">Please confirm you're not a robot.</div>
+        </sc-if>
         <sc-if value="{{ sendError }}" hint-placeholder-val="{{ false }}">
           <div style="color: oklch(78% 0.14 30); font-size: 14px; font-weight: 600;">Something went wrong sending your message — please try again or email me directly.</div>
         </sc-if>
@@ -229,7 +234,7 @@ const EMAILJS_SERVICE_ID = 'service_668bfdm';
 const EMAILJS_TEMPLATE_ID = 'template_8ygmu3g';
 
 class Component extends DCLogic {
-  state = { submitted: false, sending: false, error: false, counts: { years: 0, engineers: 0, team: 0 } };
+  state = { submitted: false, sending: false, error: false, captchaError: false, counts: { years: 0, engineers: 0, team: 0 } };
 
   componentDidMount() {
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
@@ -277,18 +282,27 @@ class Component extends DCLogic {
       notSubmitted: !this.state.submitted,
       sending: this.state.sending,
       sendError: this.state.error,
+      captchaError: this.state.captchaError,
       submitLabel: this.state.sending ? 'Sending…' : 'Send message',
       handleSubmit: (e) => {
         e.preventDefault();
         const form = e.target;
-        this.setState({ sending: true, error: false });
+
+        if (typeof grecaptcha === 'undefined' || !grecaptcha.getResponse()) {
+          this.setState({ captchaError: true, error: false });
+          return;
+        }
+
+        this.setState({ sending: true, error: false, captchaError: false });
         emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form)
           .then(() => {
             form.reset();
+            grecaptcha.reset();
             this.setState({ submitted: true, sending: false });
           })
           .catch((err) => {
             console.error('EmailJS send failed:', err);
+            grecaptcha.reset();
             this.setState({ sending: false, error: true });
           });
       }
