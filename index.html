@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -209,7 +209,7 @@
           <input type="email" name="reply_to" placeholder="Your email" required="{{ true }}" style="padding: 13px 16px; border-radius: 8px; border: 1px solid oklch(38% 0.02 255); background: oklch(27% 0.03 255); font-size: 15px; font-family: inherit; color: oklch(96% 0.004 250);" />
         </div>
         <textarea name="message" placeholder="Message" required="{{ true }}" rows="5" style="padding: 13px 16px; border-radius: 8px; border: 1px solid oklch(38% 0.02 255); background: oklch(27% 0.03 255); font-size: 15px; font-family: inherit; color: oklch(96% 0.004 250); resize: vertical;"></textarea>
-        <div class="g-recaptcha" data-sitekey="6Le0GmstAAAAAI9GdFKKPm4l3rxC7lPIcy4xlLXV"></div>
+        <div id="recaptcha-container"></div>
         <sc-if value="{{ captchaError }}" hint-placeholder-val="{{ false }}">
           <div style="color: oklch(78% 0.14 30); font-size: 14px; font-weight: 600;">Please confirm you're not a robot.</div>
         </sc-if>
@@ -232,12 +232,28 @@
 const EMAILJS_PUBLIC_KEY = 'z_ASmX8Z8xfjZnN77';
 const EMAILJS_SERVICE_ID = 'service_668bfdm';
 const EMAILJS_TEMPLATE_ID = 'template_8ygmu3g';
+const RECAPTCHA_SITE_KEY = '6Le0GmstAAAAAI9GdFKKPm4l3rxC7lPIcy4xlLXV';
 
 class Component extends DCLogic {
   state = { submitted: false, sending: false, error: false, captchaError: false, counts: { years: 0, engineers: 0, team: 0 } };
+  captchaWidgetId = null;
 
   componentDidMount() {
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+    let captchaAttempts = 0;
+    const renderCaptcha = () => {
+      const container = document.getElementById('recaptcha-container');
+      if (!container) return;
+      if (window.grecaptcha && window.grecaptcha.render) {
+        this.captchaWidgetId = window.grecaptcha.render(container, { sitekey: RECAPTCHA_SITE_KEY });
+        return;
+      }
+      captchaAttempts += 1;
+      if (captchaAttempts < 100) setTimeout(renderCaptcha, 100);
+      else console.warn('reCAPTCHA failed to load.');
+    };
+    renderCaptcha();
 
     const targets = { years: 12, engineers: 3, team: 6 };
     const duration = 1300;
@@ -288,7 +304,16 @@ class Component extends DCLogic {
         e.preventDefault();
         const form = e.target;
 
-        if (typeof grecaptcha === 'undefined' || !grecaptcha.getResponse()) {
+        let captchaResponse = '';
+        try {
+          if (this.captchaWidgetId != null && window.grecaptcha) {
+            captchaResponse = grecaptcha.getResponse(this.captchaWidgetId);
+          }
+        } catch (err) {
+          console.error('reCAPTCHA getResponse failed:', err);
+        }
+
+        if (!captchaResponse) {
           this.setState({ captchaError: true, error: false });
           return;
         }
@@ -297,12 +322,12 @@ class Component extends DCLogic {
         emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form)
           .then(() => {
             form.reset();
-            grecaptcha.reset();
+            try { grecaptcha.reset(this.captchaWidgetId); } catch (err) {}
             this.setState({ submitted: true, sending: false });
           })
           .catch((err) => {
             console.error('EmailJS send failed:', err);
-            grecaptcha.reset();
+            try { grecaptcha.reset(this.captchaWidgetId); } catch (err2) {}
             this.setState({ sending: false, error: true });
           });
       }
