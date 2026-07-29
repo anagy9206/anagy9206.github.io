@@ -150,6 +150,46 @@
     :root:not([data-scheme="light"]) .toggle .i-sun { display: none; }
   }
 
+  /* ---------- document actions ---------- */
+  .util { position: relative; display: inline-flex; }
+  /* Shares the .toggle chrome but not its rotation — a menu trigger that spins
+     reads as a control, not as a disclosure. */
+  .util-btn:hover { transform: none; }
+  .util-btn svg { width: 15px; height: 15px; }
+  .util[data-open] .util-btn { color: var(--ink); border-color: var(--ink-3); }
+
+  .util-menu {
+    position: absolute; top: calc(100% + 12px); right: 0; z-index: 60;
+    min-width: 208px; padding: 6px;
+    background: var(--paper); border: 1px solid var(--rule-2); border-radius: 12px;
+    box-shadow: 0 1px 2px color-mix(in oklab, var(--ink) 6%, transparent),
+                0 14px 34px color-mix(in oklab, var(--ink) 12%, transparent);
+    opacity: 0; visibility: hidden; transform: translateY(-6px) scale(.98); transform-origin: 100% 0;
+    /* visibility flips instantly on open (so the first item can take focus
+       right away) and only after the fade on close. */
+    transition: opacity .28s var(--ease), transform .28s var(--ease), visibility 0s linear .28s;
+  }
+  .util[data-open] .util-menu {
+    opacity: 1; visibility: visible; transform: none;
+    transition: opacity .28s var(--ease), transform .28s var(--ease), visibility 0s;
+  }
+
+  .util-item {
+    display: flex; align-items: center; gap: 11px; width: 100%;
+    padding: 11px 13px; border: 0; border-radius: 8px; cursor: pointer;
+    background: transparent; color: var(--ink-2); text-align: left;
+    font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    transition: background .3s var(--ease), color .3s var(--ease);
+  }
+  .util-item + .util-item { margin-top: 1px; }
+  .util-item svg { width: 14px; height: 14px; flex: none; color: var(--ink-3); transition: color .3s var(--ease); }
+  .util-item:hover, .util-item:focus-visible { background: var(--paper-2); color: var(--ink); }
+  .util-item:hover svg, .util-item:focus-visible svg { color: var(--accent); }
+  .util-item .lbl-done { display: none; color: var(--accent); }
+  .util-item[data-done] .lbl-idle { display: none; }
+  .util-item[data-done] .lbl-done { display: inline; }
+  .util-item[data-done] svg { color: var(--accent); }
+
   /* ---------- shared type ---------- */
   .eyebrow {
     font-family: var(--mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
@@ -361,6 +401,76 @@
     .spec-row, .job { grid-template-columns: 1fr; gap: 12px; }
     .job-when, .spec-key { padding-top: 0; }
   }
+  /* Four section links plus two round controls stop fitting on one line here,
+     so the nav drops to two rows rather than scrolling the page sideways. */
+  @media (max-width: 560px) {
+    .nav-in { flex-wrap: wrap; gap: 0 12px; padding-bottom: 11px; }
+    .nav-links { flex: 1 0 100%; justify-content: space-between; gap: 10px; margin-top: 9px; }
+    .nav-links a { font-size: 10px; letter-spacing: .1em; }
+    .toggle { margin-left: 0; }
+  }
+
+  /* ---------- print / save as PDF ----------
+     Last in the sheet on purpose: the dark-scheme rules above are written as
+     :root:not([data-scheme="light"]), so the print palette has to match that
+     specificity to override a dark-mode print. */
+  @media print {
+    @page { size: A4; margin: 14mm 13mm; }
+
+    :root,
+    :root[data-scheme="dark"],
+    :root:not([data-scheme="light"]) {
+      --paper:   #ffffff;
+      --paper-2: #ffffff;
+      --ink:     #14130f;
+      --ink-2:   #35322c;
+      --ink-3:   #6b665d;
+      --rule:    #dcd8d0;
+      --rule-2:  #bab5ab;
+      --accent:  #8a3b1e;
+      color-scheme: light;
+    }
+
+    body { background: #fff; color: #14130f; font-size: 10.5pt; line-height: 1.45; }
+
+    /* Screen-only furniture. */
+    .nav, .actions, .form, .sent, .captcha, .foot a { display: none !important; }
+
+    /* Reveal-on-scroll leaves anything below the fold at opacity 0 — without
+       this the printout is mostly blank pages. */
+    :root.js-reveal [data-reveal] { opacity: 1 !important; transform: none !important; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+
+    .shell { max-width: none; padding: 0; }
+    .hero { padding: 0 0 6pt; }
+    .hero-top { grid-template-columns: minmax(0, 1fr) 210px; gap: 24pt; }
+    .display { font-size: 38pt; margin-top: 8pt; }
+    .display .line { padding-bottom: .18em; margin-bottom: -.14em; }
+    .portrait-wrap, .portrait { width: 62px; height: 62px; }
+    .portrait { filter: grayscale(1) contrast(1.05); }
+    .hero-rule { margin: 12pt 0 10pt; }
+    .lede, .project p { max-width: none; }
+
+    .sec { padding: 14pt 0; }
+    .sec-head { margin-bottom: 12pt; break-after: avoid; }
+    .sec-head h2 { font-size: 20pt; }
+    /* Deliberately not .job — the 2018-present entry is taller than a page, so
+       keeping it whole would push it to a fresh sheet and waste one. Breaks are
+       held off inside the small blocks instead, and after every heading. */
+    .project, .spec-row, .rail-row, .link-row, .job-groups > div, .bullets li { break-inside: avoid; }
+    .job-title, .job-org, .job-groups h4, .project h4, .project-meta { break-after: avoid; }
+    .job { padding: 12pt 0; }
+    .job-title { font-size: 13pt; }
+    .job-groups { gap: 10pt; margin-top: 12pt; }
+    .projects { margin-top: 14pt; }
+    .project { padding: 10pt 0 10pt 12pt; }
+    .bullets li { margin-bottom: 2pt; font-size: 10pt; }
+
+    .contact-grid { grid-template-columns: 1fr; }
+    .contact-line { font-size: 22pt; }
+    .link-row .v svg, .link-row .v::after { display: none; }
+    .foot { padding: 10pt 0 0; }
+  }
 </style>
 </helmet>
 
@@ -381,6 +491,26 @@
           <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"></path></svg>
           <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.4 8.4 0 1 0 10.2 10.2z"></path></svg>
         </button>
+        <div class="util" id="util">
+          <button type="button" id="util-toggle" class="toggle util-btn" aria-label="Document actions" aria-haspopup="true" aria-expanded="false" aria-controls="util-menu" title="Print, save as PDF or share">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="18.5" cy="12" r="1.6"></circle></svg>
+          </button>
+          <div class="util-menu" id="util-menu" role="menu" aria-labelledby="util-toggle">
+            <button type="button" class="util-item" role="menuitem" data-act="print">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9V3.8h10V9"></path><path d="M7 18H5.2A1.2 1.2 0 0 1 4 16.8v-5.6A1.2 1.2 0 0 1 5.2 10h13.6a1.2 1.2 0 0 1 1.2 1.2v5.6a1.2 1.2 0 0 1-1.2 1.2H17"></path><path d="M7 14.6h10v5.6H7z"></path></svg>
+              <span>Print</span>
+            </button>
+            <button type="button" class="util-item" role="menuitem" data-act="pdf">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v11.2"></path><path d="M7.6 10.4 12 14.7l4.4-4.3"></path><path d="M4.6 17.4v1.9a1.2 1.2 0 0 0 1.2 1.2h12.4a1.2 1.2 0 0 0 1.2-1.2v-1.9"></path></svg>
+              <span>Download PDF</span>
+            </button>
+            <button type="button" class="util-item" role="menuitem" data-act="share">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15.4V4.2"></path><path d="M8 8.2 12 4l4 4.2"></path><path d="M5.4 13.6v5.6a1.2 1.2 0 0 0 1.2 1.2h10.8a1.2 1.2 0 0 0 1.2-1.2v-5.6"></path></svg>
+              <span class="lbl-idle">Share</span>
+              <span class="lbl-done">Link copied</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
@@ -659,6 +789,118 @@ class Component extends DCLogic {
     });
   }
 
+  /* Print, save-as-PDF and share, behind the nav's "⋯" menu. Bound to the DOM
+     directly (like the scheme toggle) rather than through onClick bindings —
+     these are document-level side effects, none of them worth component state. */
+  setupDocActions() {
+    const wrap = document.getElementById('util');
+    const btn = document.getElementById('util-toggle');
+    const menu = document.getElementById('util-menu');
+    if (!wrap || !btn || !menu || wrap.dataset.bound) return;
+    wrap.dataset.bound = '1';
+
+    const items = [...menu.querySelectorAll('.util-item')];
+    const isOpen = () => wrap.hasAttribute('data-open');
+    const open = () => {
+      wrap.setAttribute('data-open', '');
+      btn.setAttribute('aria-expanded', 'true');
+    };
+    const close = (refocus) => {
+      wrap.removeAttribute('data-open');
+      btn.setAttribute('aria-expanded', 'false');
+      if (refocus) btn.focus();
+    };
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isOpen()) close(false);
+      else { open(); items[0] && items[0].focus(); }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (isOpen() && !wrap.contains(e.target)) close(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen()) close(true);
+    });
+
+    /* Roving focus, so the menu behaves like one for keyboard users. */
+    menu.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+      e.preventDefault();
+      const at = items.indexOf(document.activeElement);
+      const step = e.key === 'ArrowDown' ? 1 : -1;
+      const next = items[(at + step + items.length) % items.length];
+      next && next.focus();
+    });
+
+    /* Both print paths go through the browser dialog. For the PDF one the
+       document title is swapped first, because that is what every browser
+       offers as the default filename in "Save as PDF". */
+    const pageTitle = document.title;
+    const printDoc = (filename) => {
+      if (filename) document.title = filename;
+      /* Always restores the title captured at setup, never whatever is on the
+         document now — a browser that skips afterprint would otherwise make the
+         swapped title permanent on the second print. */
+      const restore = () => { document.title = pageTitle; };
+      window.addEventListener('afterprint', restore, { once: true });
+      setTimeout(restore, 12000);
+      requestAnimationFrame(() => window.print());
+    };
+
+    const flag = (item) => {
+      item.setAttribute('data-done', '');
+      setTimeout(() => item.removeAttribute('data-done'), 2200);
+    };
+
+    const copyLink = (item) => {
+      const url = window.location.href;
+      const done = () => flag(item);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(done).catch(() => legacyCopy(url, done));
+        return;
+      }
+      legacyCopy(url, done);
+    };
+
+    const legacyCopy = (url, done) => {
+      const field = document.createElement('textarea');
+      field.value = url;
+      field.setAttribute('readonly', '');
+      field.style.cssText = 'position:fixed;top:-1000px;opacity:0;';
+      document.body.appendChild(field);
+      field.select();
+      try { document.execCommand('copy'); done(); } catch (err) { console.warn('Copy failed:', err); }
+      field.remove();
+    };
+
+    const share = (item) => {
+      const data = {
+        title: 'Attila Nagy — Full Stack Developer & Team Leader',
+        text: 'Attila Nagy — Full Stack Developer & Team Leader, Târgu-Mureș.',
+        url: window.location.href
+      };
+      if (navigator.share) {
+        navigator.share(data)
+          .then(() => close(false))
+          /* A dismissed share sheet is not an error worth falling back on. */
+          .catch((err) => { if (!err || err.name !== 'AbortError') copyLink(item); });
+        return;
+      }
+      copyLink(item);
+    };
+
+    items.forEach((item) => {
+      item.addEventListener('click', () => {
+        const act = item.getAttribute('data-act');
+        if (act === 'share') { share(item); return; }
+        close(false);
+        printDoc(act === 'pdf' ? 'Attila Nagy — CV' : '');
+      });
+    });
+  }
+
   /* Reveal-on-scroll. Marks elements with `data-in` rather than a class so a
      React re-render (which owns className) can't undo it. */
   setupReveals() {
@@ -734,8 +976,12 @@ class Component extends DCLogic {
   }
 
   componentDidMount() {
-    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+    /* Guarded so a blocked or slow EmailJS CDN can't throw here and take the
+       nav controls below down with it. */
+    try { emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); }
+    catch (err) { console.warn('EmailJS init failed:', err); }
     this.setupScheme();
+    this.setupDocActions();
     this.setupReveals();
     this.setupScrollSpy();
     this.setupCaptcha();
