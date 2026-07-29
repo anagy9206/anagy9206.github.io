@@ -1,8 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attila Nagy — Full Stack Developer &amp; Team Leader</title>
+<meta name="description" content="Full Stack Developer and Team Leader based in Târgu-Mureș, Romania. Over a decade building and scaling web applications with PHP, Laravel, Vue.js, MySQL and MongoDB.">
+<meta name="theme-color" content="#f4f2ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#191815" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23191815'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='32' fill='%23f4f2ee' text-anchor='middle'%3EAN%3C/text%3E%3C/svg%3E">
+<script>
+  (function () {
+    try {
+      var s = localStorage.getItem('an-scheme');
+      if (s === 'dark' || s === 'light') document.documentElement.setAttribute('data-scheme', s);
+    } catch (e) {}
+  })();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>
 <script src="./support.js"></script>
@@ -12,219 +25,579 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 <style>
-  body { margin: 0; background: oklch(98.5% 0.004 250); color: oklch(22% 0.012 250); font-family: 'Inter', Helvetica, Arial, sans-serif; }
+  :root {
+    --paper:    oklch(97.2% 0.006 85);
+    --paper-2:  oklch(94.4% 0.007 85);
+    --ink:      oklch(20% 0.008 70);
+    --ink-2:    oklch(38% 0.008 70);
+    --ink-3:    oklch(55% 0.007 75);
+    --rule:     oklch(88% 0.007 85);
+    --rule-2:   oklch(79% 0.008 85);
+    --accent:   oklch(52% 0.15 42);
+    --serif: 'Instrument Serif', 'Iowan Old Style', 'Times New Roman', serif;
+    --sans:  'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono:  'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+    --gut: clamp(20px, 5vw, 64px);
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --progress: 0;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-scheme="light"]) {
+      --paper:   oklch(16.8% 0.006 70);
+      --paper-2: oklch(21.5% 0.007 70);
+      --ink:     oklch(94% 0.005 85);
+      --ink-2:   oklch(78% 0.006 80);
+      --ink-3:   oklch(62% 0.007 80);
+      --rule:    oklch(28% 0.008 70);
+      --rule-2:  oklch(37% 0.008 70);
+      --accent:  oklch(75% 0.13 48);
+      color-scheme: dark;
+    }
+  }
+  :root[data-scheme="dark"] {
+    --paper:   oklch(16.8% 0.006 70);
+    --paper-2: oklch(21.5% 0.007 70);
+    --ink:     oklch(94% 0.005 85);
+    --ink-2:   oklch(78% 0.006 80);
+    --ink-3:   oklch(62% 0.007 80);
+    --rule:    oklch(28% 0.008 70);
+    --rule-2:  oklch(37% 0.008 70);
+    --accent:  oklch(75% 0.13 48);
+    color-scheme: dark;
+  }
+
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    transition: background .5s var(--ease), color .5s var(--ease);
+  }
+  * { box-sizing: border-box; }
   a { color: inherit; text-decoration: none; }
-  ::selection { background: oklch(85% 0.05 250); }
-  @keyframes fadeInUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
-  #stats-row > div:nth-child(1) { animation-delay: .05s; }
-  #stats-row > div:nth-child(2) { animation-delay: .15s; }
-  #stats-row > div:nth-child(3) { animation-delay: .25s; }
-  #skill-groups > div:nth-child(1) { animation-delay: 0s; }
-  #skill-groups > div:nth-child(2) { animation-delay: .1s; }
-  #skill-groups > div:nth-child(3) { animation-delay: .2s; }
+  ::selection { background: var(--accent); color: var(--paper); }
+  h1, h2, h3, h4, p, ul, dl, dd, figure { margin: 0; }
+  ul { padding: 0; list-style: none; }
+  img { max-width: 100%; display: block; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  .shell { max-width: 1120px; margin: 0 auto; padding: 0 var(--gut); }
+
+  /* ---------- nav ---------- */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in oklab, var(--paper) 82%, transparent);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav::after {
+    content: ''; position: absolute; left: 0; bottom: -1px; height: 1px; width: 100%;
+    background: var(--accent);
+    transform: scaleX(var(--progress)); transform-origin: 0 50%;
+  }
+  .nav-in {
+    max-width: 1120px; margin: 0 auto; padding: 14px var(--gut);
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  }
+  .brand { display: inline-flex; align-items: center; gap: 11px; }
+  .brand-mark {
+    width: 30px; height: 30px; border: 1px solid var(--ink); border-radius: 50%;
+    display: grid; place-items: center;
+    font-family: var(--serif); font-size: 15px; line-height: 1; letter-spacing: .01em;
+    transition: background .35s var(--ease), color .35s var(--ease), transform .5s var(--ease);
+  }
+  .brand:hover .brand-mark { background: var(--ink); color: var(--paper); transform: rotate(-8deg); }
+  .brand-name { font-size: 15px; font-weight: 500; letter-spacing: -0.01em; }
+  .nav-links { display: flex; align-items: center; gap: clamp(14px, 2.4vw, 30px); }
+  .nav-links a {
+    position: relative;
+    font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--ink-3); padding: 4px 0;
+    transition: color .3s var(--ease);
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; left: 0; bottom: 0; height: 1px; width: 100%;
+    background: currentColor; transform: scaleX(0); transform-origin: 100% 50%;
+    transition: transform .4s var(--ease);
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a:hover::after { transform: scaleX(1); transform-origin: 0 50%; }
+  .nav-links a[data-active] { color: var(--accent); }
+  .nav-links a[data-active]::after { transform: scaleX(1); transform-origin: 0 50%; }
+
+  .toggle {
+    width: 30px; height: 30px; padding: 0; margin-left: 2px;
+    display: grid; place-items: center; cursor: pointer;
+    background: transparent; border: 1px solid var(--rule-2); border-radius: 50%;
+    color: var(--ink-2);
+    transition: color .3s var(--ease), border-color .3s var(--ease), transform .5s var(--ease);
+  }
+  .toggle:hover { color: var(--ink); border-color: var(--ink-3); transform: rotate(35deg); }
+  .toggle svg { width: 14px; height: 14px; }
+  .toggle .i-moon { display: none; }
+  :root[data-scheme="dark"] .toggle .i-moon { display: block; }
+  :root[data-scheme="dark"] .toggle .i-sun { display: none; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-scheme="light"]) .toggle .i-moon { display: block; }
+    :root:not([data-scheme="light"]) .toggle .i-sun { display: none; }
+  }
+
+  /* ---------- shared type ---------- */
+  .eyebrow {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .lede { font-size: clamp(16.5px, 1.35vw, 18.5px); line-height: 1.62; color: var(--ink-2); max-width: 60ch; }
+
+  /* ---------- hero ---------- */
+  .hero { padding: clamp(52px, 9vw, 104px) 0 clamp(48px, 7vw, 78px); }
+  .portrait-wrap { width: 78px; height: 78px; margin-bottom: 26px; position: relative; }
+  .portrait {
+    width: 78px; height: 78px; border-radius: 50%; object-fit: cover; object-position: center 18%;
+    filter: grayscale(.35) contrast(1.03);
+    transition: filter .6s var(--ease), transform .6s var(--ease);
+  }
+  .portrait-wrap::after {
+    content: ''; position: absolute; inset: -7px; border-radius: 50%;
+    border: 1px solid var(--rule-2);
+    transform: scale(.86); opacity: 0;
+    transition: transform .6s var(--ease), opacity .6s var(--ease);
+  }
+  .portrait-wrap:hover .portrait { filter: none; transform: scale(1.03); }
+  .portrait-wrap:hover::after { transform: scale(1); opacity: 1; }
+
+  .display {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(54px, 11vw, 122px); line-height: .9; letter-spacing: -0.025em;
+    margin: 18px 0 0;
+  }
+  /* overflow clips the rise-in animation; the padding keeps descenders (the "y"
+     in Nagy) from being clipped along with it. */
+  .display .line { display: block; overflow: hidden; padding-bottom: .22em; margin-bottom: -.18em; }
+  .display .line > span { display: block; }
+  .display em { font-style: italic; color: var(--ink-3); }
+
+  .hero-rule { height: 1px; background: var(--rule); margin: clamp(28px, 4vw, 44px) 0 22px; transform-origin: 0 50%; }
+
+  .meta { display: flex; flex-wrap: wrap; gap: 10px clamp(28px, 5vw, 64px); margin-bottom: clamp(28px, 4vw, 40px); }
+  .meta > div { display: grid; gap: 5px; }
+  .meta dt { font-family: var(--mono); font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); }
+  .meta dd { margin: 0; font-size: 15px; color: var(--ink); }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase;
+    padding: 13px 22px; border-radius: 100px; border: 1px solid var(--ink);
+    background: var(--ink); color: var(--paper); cursor: pointer;
+    transition: background .35s var(--ease), color .35s var(--ease), border-color .35s var(--ease), transform .35s var(--ease);
+  }
+  .btn svg { width: 13px; height: 13px; transition: transform .4s var(--ease); }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:hover svg { transform: translateX(4px); }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--rule-2); }
+  .btn-ghost:hover { border-color: var(--ink); }
+  .btn[disabled] { opacity: .55; cursor: progress; transform: none; }
+
+  /* ---------- sections ---------- */
+  .sec { padding: clamp(48px, 6.5vw, 78px) 0; border-top: 1px solid var(--rule); }
+  .sec-head { display: flex; align-items: baseline; gap: 18px; margin-bottom: clamp(34px, 5vw, 52px); }
+  .sec-num { font-family: var(--mono); font-size: 11px; letter-spacing: .16em; color: var(--accent); }
+  .sec-head h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(30px, 4.4vw, 46px); letter-spacing: -0.02em; line-height: 1; }
+  .sec-head .fill { flex: 1; height: 1px; background: var(--rule); }
+
+  /* ---------- spec rows ---------- */
+  .spec-row {
+    display: grid; grid-template-columns: minmax(140px, 190px) 1fr; gap: 18px clamp(20px, 4vw, 48px);
+    padding: 22px 0; border-top: 1px solid var(--rule);
+    transition: border-color .35s var(--ease);
+  }
+  .spec-row:first-child { border-top: 0; }
+  .spec-row:hover { border-top-color: var(--rule-2); }
+  .spec-key {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--ink-3); padding-top: 4px;
+    transition: color .35s var(--ease), transform .45s var(--ease);
+  }
+  .spec-row:hover .spec-key { color: var(--accent); transform: translateX(3px); }
+  .tags { display: flex; flex-wrap: wrap; align-items: baseline; }
+  .tags span { font-size: 16px; color: var(--ink-2); transition: color .25s var(--ease); }
+  .tags span:hover { color: var(--ink); }
+  .tags span:not(:last-child)::after { content: '·'; margin: 0 .5em; color: var(--rule-2); }
+  .spec-val { font-size: 16px; color: var(--ink-2); }
+  .spec-val strong { font-weight: 500; color: var(--ink); }
+  .spec-note { display: block; font-size: 14.5px; color: var(--ink-3); margin-top: 3px; }
+
+  /* ---------- experience ---------- */
+  .job { display: grid; grid-template-columns: minmax(140px, 190px) 1fr; gap: 18px clamp(20px, 4vw, 48px); padding: clamp(30px, 4vw, 44px) 0; border-top: 1px solid var(--rule); }
+  .job:first-of-type { border-top: 0; padding-top: 0; }
+  .job-when { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); padding-top: 7px; }
+  .job-title { font-family: var(--serif); font-weight: 400; font-size: clamp(22px, 2.6vw, 30px); letter-spacing: -0.015em; line-height: 1.15; }
+  .job-org { font-size: 14.5px; color: var(--accent); margin-top: 6px; }
+  .job-groups { display: grid; gap: 22px; margin-top: 26px; }
+  .job-groups h4 { font-family: var(--mono); font-size: 10.5px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 9px; }
+  .bullets li { position: relative; padding-left: 20px; font-size: 15.5px; line-height: 1.62; color: var(--ink-2); margin-bottom: 7px; }
+  .bullets li::before {
+    content: ''; position: absolute; left: 0; top: .72em; width: 8px; height: 1px; background: var(--rule-2);
+    transition: width .35s var(--ease), background .35s var(--ease);
+  }
+  .bullets li:hover::before { width: 14px; background: var(--accent); }
+
+  .projects { display: grid; gap: 4px; margin-top: 34px; }
+  .project {
+    padding: 20px 0 20px 24px; border-left: 1px solid var(--rule);
+    transition: border-color .4s var(--ease), transform .4s var(--ease);
+  }
+  .project:hover { border-left-color: var(--accent); transform: translateX(4px); }
+  .project h4 { font-size: 17px; font-weight: 500; letter-spacing: -0.01em; }
+  .project-meta { font-family: var(--mono); font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3); margin: 7px 0 10px; }
+  .project p { font-size: 15px; line-height: 1.65; color: var(--ink-2); max-width: 62ch; }
+
+  /* ---------- contact ---------- */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(36px, 6vw, 76px); align-items: start; }
+  .contact-line { font-family: var(--serif); font-weight: 400; font-size: clamp(30px, 4.2vw, 50px); line-height: 1.08; letter-spacing: -0.02em; }
+  .contact-line em { font-style: italic; color: var(--ink-3); }
+  .links { display: grid; gap: 2px; margin-top: 32px; }
+  .link-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    padding: 15px 0; border-top: 1px solid var(--rule);
+    transition: border-color .35s var(--ease);
+  }
+  .link-row:last-child { border-bottom: 1px solid var(--rule); }
+  .link-row:hover { border-top-color: var(--ink-3); }
+  .link-row .k { font-family: var(--mono); font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); }
+  .link-row .v { display: inline-flex; align-items: center; gap: 9px; font-size: 15.5px; transition: color .3s var(--ease); }
+  .link-row .v svg { width: 13px; height: 13px; opacity: 0; transform: translateX(-6px); transition: opacity .35s var(--ease), transform .35s var(--ease); }
+  .link-row:hover .v { color: var(--accent); }
+  .link-row:hover .v svg { opacity: 1; transform: none; }
+
+  .form { display: grid; gap: 22px; }
+  .field label { display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 9px; }
+  .field input, .field textarea {
+    width: 100%; padding: 8px 0 11px; font-family: var(--sans); font-size: 16px; color: var(--ink);
+    background: transparent; border: 0; border-bottom: 1px solid var(--rule-2); border-radius: 0;
+    transition: border-color .35s var(--ease);
+  }
+  .field textarea { resize: vertical; min-height: 108px; line-height: 1.55; }
+  .field input:focus, .field textarea:focus { outline: none; border-bottom-color: var(--accent); }
+  .field input:focus-visible, .field textarea:focus-visible { outline: none; }
+  .form-note { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; color: var(--accent); }
+  .sent { border-left: 1px solid var(--accent); padding: 18px 0 18px 22px; }
+  .sent strong { display: block; font-family: var(--serif); font-size: 24px; font-weight: 400; margin-bottom: 6px; }
+  .sent span { font-size: 15px; color: var(--ink-2); }
+  .captcha { margin-top: 2px; }
+
+  /* ---------- footer ---------- */
+  .foot {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px;
+    padding: 26px 0 44px; border-top: 1px solid var(--rule);
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .foot a { transition: color .3s var(--ease); }
+  .foot a:hover { color: var(--accent); }
+
+  /* ---------- motion ---------- */
+  [id] { scroll-margin-top: 96px; }
+  @keyframes rise { from { transform: translateY(105%); } to { transform: translateY(0); } }
+  @keyframes fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  @keyframes wipe { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  .hero .portrait-wrap { animation: fade-up .8s var(--ease) both .05s; }
+  .hero .eyebrow { animation: fade-up .8s var(--ease) both .14s; }
+  .display .line:nth-child(1) > span { animation: rise .95s var(--ease) both .18s; }
+  .display .line:nth-child(2) > span { animation: rise .95s var(--ease) both .27s; }
+  .hero-rule { animation: wipe 1s var(--ease) both .42s; }
+  .hero .meta > div:nth-child(1) { animation: fade-up .8s var(--ease) both .5s; }
+  .hero .meta > div:nth-child(2) { animation: fade-up .8s var(--ease) both .57s; }
+  .hero .meta > div:nth-child(3) { animation: fade-up .8s var(--ease) both .64s; }
+  .hero .lede { animation: fade-up .8s var(--ease) both .7s; }
+  .hero .actions { animation: fade-up .8s var(--ease) both .78s; }
+
+  :root.js-reveal [data-reveal] { opacity: 0; transform: translateY(18px); }
+  :root.js-reveal [data-reveal][data-in] {
+    opacity: 1; transform: none;
+    transition: opacity .75s var(--ease), transform .75s var(--ease);
+  }
+  :root.js-reveal [data-reveal]:nth-child(2)[data-in] { transition-delay: .07s; }
+  :root.js-reveal [data-reveal]:nth-child(3)[data-in] { transition-delay: .14s; }
+  :root.js-reveal [data-reveal]:nth-child(4)[data-in] { transition-delay: .21s; }
+  :root.js-reveal [data-reveal]:nth-child(5)[data-in] { transition-delay: .28s; }
+  :root.js-reveal [data-reveal]:nth-child(6)[data-in] { transition-delay: .35s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    :root.js-reveal [data-reveal] { opacity: 1 !important; transform: none !important; }
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 860px) {
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 700px) {
+    .brand-name { display: none; }
+    .nav-links { gap: 16px; }
+    .spec-row, .job { grid-template-columns: 1fr; gap: 12px; }
+    .job-when, .spec-key { padding-top: 0; }
+    .meta { gap: 18px 34px; }
+  }
 </style>
 </helmet>
 
-<div style="max-width: 960px; margin: 0 auto;">
+<div class="shell-outer">
 
-  <nav style="position: sticky; top: 0; z-index: 10; background: oklch(98.5% 0.004 250 / 0.85); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; padding: 22px 32px; border-bottom: 1px solid oklch(90% 0.008 250);">
-    <div style="display: flex; align-items: center; gap: 10px;">
-      <div style="width: 32px; height: 32px; border-radius: 9px; background: oklch(50% 0.16 250); color: oklch(98% 0.004 250); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px;">AN</div>
-      <div style="font-weight: 700; font-size: 16px;">Attila Nagy</div>
-    </div>
-    <div style="display: flex; gap: 30px; align-items: center;">
-      <a href="#skills" style="font-size: 14px; color: oklch(35% 0.012 250); font-weight: 500; transition: color .2s ease;" style-hover="color: oklch(50% 0.16 250);">Skills</a>
-      <a href="#experience" style="font-size: 14px; color: oklch(35% 0.012 250); font-weight: 500; transition: color .2s ease;" style-hover="color: oklch(50% 0.16 250);">Experience</a>
-      <a href="#contact" style="background: oklch(22% 0.012 250); color: oklch(98% 0.004 250); padding: 10px 20px; border-radius: 100px; font-size: 14px; font-weight: 600;">Contact</a>
+  <nav class="nav">
+    <div class="nav-in">
+      <a class="brand" href="#top">
+        <span class="brand-mark">AN</span>
+        <span class="brand-name">Attila Nagy</span>
+      </a>
+      <div class="nav-links">
+        <a href="#skills" data-nav="skills">Skills</a>
+        <a href="#experience" data-nav="experience">Work</a>
+        <a href="#details" data-nav="details">Details</a>
+        <a href="#contact" data-nav="contact">Contact</a>
+        <button type="button" id="scheme-toggle" class="toggle" aria-label="Toggle colour scheme" title="Toggle colour scheme">
+          <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"></path></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.4 8.4 0 1 0 10.2 10.2z"></path></svg>
+        </button>
+      </div>
     </div>
   </nav>
 
-  <header style="display: flex; align-items: center; gap: 56px; padding: 88px 32px 72px; flex-wrap: wrap;">
-    <div style="position: relative; flex-shrink: 0; animation: fadeInUp .7s ease both;">
-      <div style="position: absolute; top: 16px; left: -16px; width: 220px; height: 260px; border-radius: 28px; background: oklch(88% 0.06 250); z-index: 0;"></div>
-      <img src="assets/attila-photo.jpeg" alt="Attila Nagy" style="position: relative; z-index: 1; width: 220px; height: 260px; border-radius: 28px; object-fit: cover; object-position: center 15%; transition: transform .4s ease;" style-hover="transform: scale(1.02);" />
-    </div>
-    <div style="min-width: 320px; flex: 1;">
-      <div style="display: inline-block; background: oklch(93% 0.045 250); color: oklch(38% 0.11 250); font-size: 13px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 6px 14px; border-radius: 100px; margin-bottom: 20px; animation: fadeInUp .6s ease both;">Full Stack Developer &amp; Team Leader</div>
-      <h1 style="font-size: 64px; font-weight: 900; letter-spacing: -0.03em; line-height: 1.02; margin: 0 0 20px; animation: fadeInUp .7s ease both .08s;">Attila Nagy</h1>
-      <div style="display: flex; align-items: center; gap: 6px; font-size: 15px; color: oklch(45% 0.012 250); margin-bottom: 16px; animation: fadeInUp .7s ease both .14s;">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-7.36-7-12a7 7 0 1 1 14 0c0 4.64-7 12-7 12z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>
-        Târgu-Mureș, Romania
-      </div>
-      <div style="display: flex; flex-wrap: wrap; gap: 18px; font-size: 14.5px; margin-bottom: 24px; animation: fadeInUp .7s ease both .18s;">
-        <a href="mailto:attilan9206@gmail.com" style="display: inline-flex; align-items: center; gap: 6px; transition: color .2s ease;" style-hover="color: oklch(50% 0.16 250);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg>attilan9206@gmail.com</a>
-        <a href="tel:+40741780195" style="display: inline-flex; align-items: center; gap: 6px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 2 6a2 2 0 0 1 2-2z"></path></svg>0741 780 195</a>
-        <a href="https://www.linkedin.com/in/nagy-attila-2b057ba0/" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 6px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.07 0l2-2a5 5 0 0 0-7.07-7.07l-1 1"></path><path d="M14 11a5 5 0 0 0-7.07 0l-2 2a5 5 0 0 0 7.07 7.07l1-1"></path></svg>LinkedIn</a>
-      </div>
-      <p style="font-size: 16.5px; line-height: 1.65; color: oklch(32% 0.012 250); max-width: 560px; margin: 0 0 28px; animation: fadeInUp .7s ease both .22s;">Full Stack Developer and Team Leader with over a decade of experience building and scaling web applications across front-end, back-end, and database layers. Leads development teams of up to 3 engineers, consistently delivering high-quality work on schedule while providing fast, reliable client support. Proficient in PHP and Laravel, Vue.js, and MySQL/MongoDB, with growing hands-on experience in AI-assisted development and AI-driven integrations and automation.</p>
-      <div style="display: flex; gap: 14px; flex-wrap: wrap; animation: fadeInUp .7s ease both .26s;">
-        <a href="#contact" style="display: inline-flex; background: oklch(50% 0.16 250); color: oklch(98% 0.004 250); padding: 13px 26px; border-radius: 100px; font-size: 15px; font-weight: 600; transition: transform .2s ease, background .2s ease;" style-hover="background: oklch(43% 0.16 250); transform: translateY(-2px);">Get in touch</a>
-        <a href="#experience" style="display: inline-flex; background: transparent; color: oklch(28% 0.012 250); border: 1.5px solid oklch(85% 0.01 250); padding: 13px 26px; border-radius: 100px; font-size: 15px; font-weight: 600; transition: transform .2s ease, border-color .2s ease;" style-hover="border-color: oklch(60% 0.01 250); transform: translateY(-2px);">View experience</a>
-      </div>
-    </div>
-  </header>
+  <div class="shell">
 
-  <section id="stats-row" style="padding: 0 32px 72px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
-    <sc-for list="{{ stats }}" as="st" hint-placeholder-count="3">
-      <div style="padding: 28px 26px; background: oklch(96% 0.01 250); border-radius: 16px; animation-name: fadeInUp; animation-duration: .6s; animation-timing-function: ease; animation-fill-mode: both; transition: transform .25s ease, box-shadow .25s ease;" style-hover="transform: translateY(-4px); box-shadow: 0 12px 24px oklch(0% 0 0 / 0.08);">
-        <div style="font-size: 36px; font-weight: 900; letter-spacing: -0.02em; color: {{ st.color }}; margin-bottom: 4px;">{{ st.num }}</div>
-        <div style="font-size: 14px; color: oklch(40% 0.012 250); font-weight: 500;">{{ st.label }}</div>
+    <header class="hero" id="top">
+      <div class="portrait-wrap">
+        <img class="portrait" src="assets/attila-photo.jpeg" alt="Attila Nagy" width="78" height="78" />
       </div>
-    </sc-for>
-  </section>
+      <p class="eyebrow">Full Stack Developer &amp; Team Leader</p>
+      <h1 class="display">
+        <span class="line"><span>Attila</span></span>
+        <span class="line"><span>Nagy</span></span>
+      </h1>
+      <div class="hero-rule"></div>
+      <dl class="meta">
+        <div><dt>Based in</dt><dd>Târgu-Mureș, Romania</dd></div>
+        <div><dt>Experience</dt><dd>12 years</dd></div>
+        <div><dt>Working with</dt><dd>PHP · Laravel · Vue.js</dd></div>
+      </dl>
+      <p class="lede">I build and scale web applications across the front-end, back-end and database layers, and lead small development teams through delivery. A decade of shipping production work for clients — lately with a growing amount of AI-assisted development and automation woven into the process.</p>
+      <div class="actions">
+        <a class="btn" href="#contact">Get in touch <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg></a>
+        <a class="btn btn-ghost" href="#experience">See the work</a>
+      </div>
+    </header>
 
-  <section id="skills" style="padding: 64px 32px; border-top: 1px solid oklch(90% 0.008 250);">
-    <div style="display: flex; align-items: baseline; gap: 14px; margin-bottom: 36px;">
-      <span style="font-size: 15px; font-weight: 800; color: oklch(80% 0.02 250);">01</span>
-      <h2 style="font-size: 30px; font-weight: 800; letter-spacing: -0.015em; margin: 0;">Core Technical Skills</h2>
-    </div>
-    <div id="skill-groups" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;">
-      <sc-for list="{{ skillGroups }}" as="grp" hint-placeholder-count="3">
-        <div style="animation-name: fadeInUp; animation-duration: .6s; animation-timing-function: ease; animation-fill-mode: both;">
-          <div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: {{ grp.color }}; margin-bottom: 14px;">{{ grp.title }}</div>
-          <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-            <sc-for list="{{ grp.items }}" as="s" hint-placeholder-count="6">
-              <span style="background: {{ grp.bg }}; color: {{ grp.fg }}; font-size: 13.5px; font-weight: 600; padding: 6px 12px; border-radius: 7px; transition: transform .15s ease;" style-hover="transform: translateY(-2px);">{{ s }}</span>
+    <section class="sec" id="skills">
+      <div class="sec-head">
+        <span class="sec-num">01</span>
+        <h2>Skills</h2>
+        <span class="fill"></span>
+      </div>
+      <div class="spec">
+        <sc-for list="{{ skillGroups }}" as="grp" hint-placeholder-count="3">
+          <div class="spec-row" data-reveal>
+            <div class="spec-key">{{ grp.title }}</div>
+            <div class="tags">
+              <sc-for list="{{ grp.items }}" as="s" hint-placeholder-count="6">
+                <span>{{ s }}</span>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+        <div class="spec-row" data-reveal>
+          <div class="spec-key">Methodology</div>
+          <div class="spec-val"><strong>Agile</strong><span class="spec-note">Iterative delivery, refinement and code review as part of the weekly rhythm.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="experience">
+      <div class="sec-head">
+        <span class="sec-num">02</span>
+        <h2>Experience</h2>
+        <span class="fill"></span>
+      </div>
+
+      <article class="job" data-reveal>
+        <div class="job-when">2018 — Present</div>
+        <div>
+          <h3 class="job-title">Full Stack Web Developer, Team Leader &amp; Project Manager</h3>
+          <p class="job-org">Lynx Solutions</p>
+
+          <div class="job-groups">
+            <div>
+              <h4>Project management</h4>
+              <ul class="bullets">
+                <li>Main point of contact for client communication, planning and support</li>
+                <li>Assigns tasks based on technical expertise, and writes and refines the task documentation behind them</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Team leadership</h4>
+              <ul class="bullets">
+                <li>Leads teams of up to 3 engineers across concurrent projects, delivering on schedule with fast, responsive client support</li>
+                <li>Trains team members in Elastic Search, Vue.js, Laravel and API integrations</li>
+                <li>Designs the architecture for new features and database structures</li>
+                <li>Runs code reviews and supports the team's communication and collaboration</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Development</h4>
+              <ul class="bullets">
+                <li>Builds and maintains features across multiple production projects</li>
+                <li>Designs and implements database structures</li>
+                <li>Designs UI/UX solutions and tests newly developed features</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="projects">
+            <div class="project">
+              <h4>Online Conference Building CMS</h4>
+              <p class="project-meta">Laravel · Vue.js · MySQL · MongoDB</p>
+              <p>A CMS for building online video conferences — inviting attendees, running polls and managing interactive Q&amp;A during live streams. Conference data (chat, polls, questions) lives in MongoDB while user data is managed in MySQL, with an API serving the mobile applications. Built the Vue.js front-end, the Laravel API and both database structures.</p>
+            </div>
+            <div class="project">
+              <h4>EV Charging &amp; Energy Transaction Platform</h4>
+              <p class="project-meta">Electromobility · Europe · Team of 6 · PHP Developer</p>
+              <p>A European platform managing EV charging and energy transactions — a neutral, hardware-agnostic solution for Charge Point Operators and eMobility Service Providers handling billing, payments, roaming and smart charging. Improved the stability of real-time communication between charging stations and the platform, maintained and optimised the code and database, developed new microservices, and wrote integration and unit tests.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="job" data-reveal>
+        <div class="job-when">2015 — 2018</div>
+        <div>
+          <h3 class="job-title">Full Stack Web Developer</h3>
+          <p class="job-org">Pimal Skill</p>
+          <ul class="bullets" style="margin-top: 20px;">
+            <li>Developed web designs and web applications</li>
+            <li>Conducted application and design testing</li>
+            <li>Performed code reviews</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="job" data-reveal>
+        <div class="job-when">2014 — 2015</div>
+        <div>
+          <h3 class="job-title">Mobile Application Developer</h3>
+          <p class="job-org">Inno Web</p>
+          <ul class="bullets" style="margin-top: 20px;">
+            <li>Developed cross-platform mobile applications using PhoneGap</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <section class="sec" id="details">
+      <div class="sec-head">
+        <span class="sec-num">03</span>
+        <h2>Details</h2>
+        <span class="fill"></span>
+      </div>
+      <div class="spec">
+        <div class="spec-row" data-reveal>
+          <div class="spec-key">Education</div>
+          <div class="spec-val"><strong>Bachelor's Degree</strong><span class="spec-note">Petru Maior University of Târgu-Mureș · 2011 – 2014</span></div>
+        </div>
+        <div class="spec-row" data-reveal>
+          <div class="spec-key">Languages</div>
+          <div class="spec-val"><strong>English</strong><span class="spec-note">Advanced · Hungarian and Romanian, native</span></div>
+        </div>
+        <div class="spec-row" data-reveal>
+          <div class="spec-key">Ways of working</div>
+          <div class="tags">
+            <sc-for list="{{ softSkills }}" as="s" hint-placeholder-count="5">
+              <span>{{ s }}</span>
             </sc-for>
           </div>
         </div>
-      </sc-for>
-    </div>
-    <div style="margin-top: 24px; font-size: 14px; color: oklch(45% 0.012 250);">Methodology: <strong style="color: oklch(28% 0.012 250);">Agile</strong></div>
-  </section>
+      </div>
+    </section>
 
-  <section id="experience" style="padding: 64px 32px; border-top: 1px solid oklch(90% 0.008 250);">
-    <div style="display: flex; align-items: baseline; gap: 14px; margin-bottom: 40px;">
-      <span style="font-size: 15px; font-weight: 800; color: oklch(80% 0.02 250);">02</span>
-      <h2 style="font-size: 30px; font-weight: 800; letter-spacing: -0.015em; margin: 0;">Experience</h2>
-    </div>
+    <section class="sec" id="contact">
+      <div class="sec-head">
+        <span class="sec-num">04</span>
+        <h2>Contact</h2>
+        <span class="fill"></span>
+      </div>
 
-    <div style="display: grid; grid-template-columns: 130px 1fr; gap: 24px; margin-bottom: 44px;">
-      <div style="font-size: 14px; font-weight: 700; color: oklch(50% 0.16 250); padding-top: 2px;">2018 — Now</div>
-      <div style="border-left: 2px solid oklch(90% 0.008 250); padding-left: 28px;">
-        <h3 style="font-size: 20px; font-weight: 700; margin: 0 0 2px;">Full Stack Web Developer, Team Leader &amp; Project Manager</h3>
-        <div style="font-size: 15px; color: oklch(48% 0.13 250); font-weight: 600; margin-bottom: 18px;">Lynx Solutions</div>
-
-        <div style="display: grid; gap: 18px;">
-          <div>
-            <div style="font-size: 14px; font-weight: 600; color: oklch(28% 0.012 250); margin-bottom: 6px;">Project Management &amp; Client Communication</div>
-            <ul style="margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.7; color: oklch(32% 0.012 250);">
-              <li>Serves as the main point of contact for client communication, planning, and support</li>
-              <li>Assigns tasks to team members based on technical expertise, and creates and refines task documentation</li>
-            </ul>
-          </div>
-          <div>
-            <div style="font-size: 14px; font-weight: 600; color: oklch(28% 0.012 250); margin-bottom: 6px;">Team Leadership</div>
-            <ul style="margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.7; color: oklch(32% 0.012 250);">
-              <li>Leads development teams of up to 3 engineers across multiple concurrent projects, consistently delivering high-quality work on schedule and providing fast, responsive client support</li>
-              <li>Trains team members in Elastic Search, Vue.js, Laravel, and API integrations</li>
-              <li>Designs architecture for new features and database structures</li>
-              <li>Conducts code reviews and supports team communication and collaboration</li>
-            </ul>
-          </div>
-          <div>
-            <div style="font-size: 14px; font-weight: 600; color: oklch(28% 0.012 250); margin-bottom: 6px;">Development</div>
-            <ul style="margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.7; color: oklch(32% 0.012 250);">
-              <li>Develops and maintains new features across multiple projects</li>
-              <li>Designs and implements database structures</li>
-              <li>Designs new UI/UX solutions and tests newly developed features</li>
-            </ul>
+      <div class="contact-grid">
+        <div>
+          <p class="contact-line">Have something<br /><em>worth building?</em></p>
+          <p class="lede" style="margin-top: 20px;">Based in Târgu-Mureș and working with clients across Europe. Send a message, or reach me directly — I answer quickly.</p>
+          <div class="links">
+            <a class="link-row" href="mailto:attilan9206@gmail.com">
+              <span class="k">Email</span>
+              <span class="v">attilan9206@gmail.com <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"></path></svg></span>
+            </a>
+            <a class="link-row" href="tel:+40741780195">
+              <span class="k">Phone</span>
+              <span class="v">0741 780 195 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"></path></svg></span>
+            </a>
+            <a class="link-row" href="https://www.linkedin.com/in/nagy-attila-2b057ba0/" target="_blank" rel="noopener">
+              <span class="k">LinkedIn</span>
+              <span class="v">nagy-attila <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"></path></svg></span>
+            </a>
           </div>
         </div>
 
-        <div style="margin-top: 26px; display: grid; gap: 16px;">
-          <div style="background: oklch(95% 0.035 250); border-left: 3px solid oklch(55% 0.16 250); border-radius: 10px; padding: 20px 22px; transition: transform .25s ease, box-shadow .25s ease;" style-hover="transform: translateY(-3px); box-shadow: 0 10px 22px oklch(0% 0 0 / 0.07);">
-            <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">Online Conference Building CMS</div>
-            <p style="font-size: 14.5px; line-height: 1.65; color: oklch(34% 0.012 250); margin: 0;">A CMS enabling users to build online video conferences, invite attendees, run polls, and manage interactive Q&amp;A during live streams. Built with Laravel, Vue.js, MySQL and MongoDB — front-end in Vue.js, API in Laravel, database structures designed in both MongoDB and MySQL.</p>
-          </div>
-          <div style="background: oklch(95% 0.035 145); border-left: 3px solid oklch(55% 0.16 145); border-radius: 10px; padding: 20px 22px; transition: transform .25s ease, box-shadow .25s ease;" style-hover="transform: translateY(-3px); box-shadow: 0 10px 22px oklch(0% 0 0 / 0.07);">
-            <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">EV Charging &amp; Energy Transaction Management Platform</div>
-            <div style="font-size: 13px; color: oklch(45% 0.012 250); margin-bottom: 8px;">Electromobility · Europe · Team of 6 · PHP Developer</div>
-            <p style="font-size: 14.5px; line-height: 1.65; color: oklch(34% 0.012 250); margin: 0;">A European platform managing EV charging and energy transactions — a neutral, hardware-agnostic solution for Charge Point Operators and eMobility Service Providers handling billing, payments, roaming, and smart charging. Improved the stability of real-time communication between charging stations and the platform, increasing network reliability. Maintained and optimized code and database, developed new microservices, and wrote integration and unit tests.</p>
-          </div>
+        <div>
+          <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+            <div class="sent">
+              <strong>Message sent.</strong>
+              <span>Thanks for reaching out — I'll get back to you shortly.</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+            <form class="form" onSubmit="{{ handleSubmit }}">
+              <div class="field">
+                <label for="f-name">Your name</label>
+                <input id="f-name" type="text" name="from_name" autocomplete="name" required="{{ true }}" />
+              </div>
+              <div class="field">
+                <label for="f-email">Your email</label>
+                <input id="f-email" type="email" name="reply_to" autocomplete="email" required="{{ true }}" />
+              </div>
+              <div class="field">
+                <label for="f-msg">Message</label>
+                <textarea id="f-msg" name="message" rows="5" required="{{ true }}"></textarea>
+              </div>
+              <div class="captcha" id="recaptcha-container"></div>
+              <sc-if value="{{ captchaError }}" hint-placeholder-val="{{ false }}">
+                <p class="form-note">Please confirm you're not a robot.</p>
+              </sc-if>
+              <sc-if value="{{ sendError }}" hint-placeholder-val="{{ false }}">
+                <p class="form-note">Something went wrong — please try again, or email me directly.</p>
+              </sc-if>
+              <button class="btn" type="submit" disabled="{{ sending }}" style="justify-self: start;">
+                {{ submitLabel }}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+              </button>
+            </form>
+          </sc-if>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div style="display: grid; grid-template-columns: 130px 1fr; gap: 24px; margin-bottom: 36px;">
-      <div style="font-size: 14px; font-weight: 700; color: oklch(45% 0.012 250); padding-top: 2px;">2015 — 2018</div>
-      <div style="border-left: 2px solid oklch(90% 0.008 250); padding-left: 28px;">
-        <h3 style="font-size: 20px; font-weight: 700; margin: 0 0 2px;">Full Stack Web Developer</h3>
-        <div style="font-size: 15px; color: oklch(48% 0.13 250); font-weight: 600; margin-bottom: 14px;">Pimal Skill</div>
-        <ul style="margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.7; color: oklch(32% 0.012 250);">
-          <li>Developed web designs and web applications</li>
-          <li>Conducted application and design testing</li>
-          <li>Performed code reviews</li>
-        </ul>
-      </div>
-    </div>
+    <footer class="foot">
+      <span>© 2026 Attila Nagy</span>
+      <a href="#top">Back to top ↑</a>
+    </footer>
 
-    <div style="display: grid; grid-template-columns: 130px 1fr; gap: 24px;">
-      <div style="font-size: 14px; font-weight: 700; color: oklch(45% 0.012 250); padding-top: 2px;">2014 — 2015</div>
-      <div style="border-left: 2px solid oklch(90% 0.008 250); padding-left: 28px;">
-        <h3 style="font-size: 20px; font-weight: 700; margin: 0 0 2px;">Mobile Application Developer</h3>
-        <div style="font-size: 15px; color: oklch(48% 0.13 250); font-weight: 600; margin-bottom: 14px;">Inno Web</div>
-        <ul style="margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.7; color: oklch(32% 0.012 250);">
-          <li>Developed mobile applications using PhoneGap</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section style="padding: 64px 32px; border-top: 1px solid oklch(90% 0.008 250); display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
-    <div style="background: oklch(96% 0.01 250); border-radius: 16px; padding: 28px;">
-      <div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: oklch(50% 0.15 250); margin-bottom: 16px;">Education</div>
-      <div style="font-size: 17px; font-weight: 700; margin-bottom: 2px;">Bachelor's Degree</div>
-      <div style="font-size: 14.5px; color: oklch(35% 0.012 250);">Petru Maior University of Târgu-Mureș</div>
-      <div style="font-size: 14px; color: oklch(45% 0.012 250); margin-top: 2px;">2011 – 2014</div>
-    </div>
-    <div style="background: oklch(96% 0.01 250); border-radius: 16px; padding: 28px;">
-      <div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: oklch(50% 0.15 35); margin-bottom: 16px;">Languages</div>
-      <div style="font-size: 17px; font-weight: 700; margin-bottom: 2px;">English</div>
-      <div style="font-size: 14.5px; color: oklch(35% 0.012 250);">Advanced</div>
-    </div>
-  </section>
-
-  <section id="contact" style="margin: 0 32px 32px; padding: 64px 48px; background: oklch(22% 0.03 255); border-radius: 24px; color: oklch(96% 0.004 250);">
-    <div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: oklch(70% 0.08 250); margin-bottom: 14px;">Contact</div>
-    <h3 style="font-size: 38px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 16px; max-width: 480px;">Let's build something great together</h3>
-    <p style="font-size: 16px; line-height: 1.6; color: oklch(80% 0.01 250); max-width: 480px; margin: 0 0 28px;">Based in Târgu-Mureș, Romania. Send a message and I'll get back to you.</p>
-    <div style="display: flex; flex-wrap: wrap; gap: 22px; font-size: 14.5px; font-weight: 500; margin-bottom: 40px;">
-      <a href="mailto:attilan9206@gmail.com" style="display: inline-flex; align-items: center; gap: 7px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg>attilan9206@gmail.com</a>
-      <a href="tel:+40741780195" style="display: inline-flex; align-items: center; gap: 7px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 2 6a2 2 0 0 1 2-2z"></path></svg>0741 780 195</a>
-      <a href="https://www.linkedin.com/in/nagy-attila-2b057ba0/" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 7px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.07 0l2-2a5 5 0 0 0-7.07-7.07l-1 1"></path><path d="M14 11a5 5 0 0 0-7.07 0l-2 2a5 5 0 0 0 7.07 7.07l1-1"></path></svg>LinkedIn</a>
-    </div>
-
-    <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
-      <div style="background: oklch(30% 0.05 155); border-radius: 12px; padding: 28px; font-size: 15px; color: oklch(92% 0.03 155); font-weight: 600;">
-        Thanks — your message has been sent. I'll be in touch soon.
-      </div>
-    </sc-if>
-    <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
-      <form onSubmit="{{ handleSubmit }}" style="display: grid; gap: 16px; max-width: 560px;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-          <input type="text" name="from_name" placeholder="Your name" required="{{ true }}" style="padding: 13px 16px; border-radius: 8px; border: 1px solid oklch(38% 0.02 255); background: oklch(27% 0.03 255); font-size: 15px; font-family: inherit; color: oklch(96% 0.004 250);" />
-          <input type="email" name="reply_to" placeholder="Your email" required="{{ true }}" style="padding: 13px 16px; border-radius: 8px; border: 1px solid oklch(38% 0.02 255); background: oklch(27% 0.03 255); font-size: 15px; font-family: inherit; color: oklch(96% 0.004 250);" />
-        </div>
-        <textarea name="message" placeholder="Message" required="{{ true }}" rows="5" style="padding: 13px 16px; border-radius: 8px; border: 1px solid oklch(38% 0.02 255); background: oklch(27% 0.03 255); font-size: 15px; font-family: inherit; color: oklch(96% 0.004 250); resize: vertical;"></textarea>
-        <div id="recaptcha-container"></div>
-        <sc-if value="{{ captchaError }}" hint-placeholder-val="{{ false }}">
-          <div style="color: oklch(78% 0.14 30); font-size: 14px; font-weight: 600;">Please confirm you're not a robot.</div>
-        </sc-if>
-        <sc-if value="{{ sendError }}" hint-placeholder-val="{{ false }}">
-          <div style="color: oklch(78% 0.14 30); font-size: 14px; font-weight: 600;">Something went wrong sending your message — please try again or email me directly.</div>
-        </sc-if>
-        <button type="submit" disabled="{{ sending }}" style="justify-self: start; background: oklch(65% 0.16 250); color: oklch(15% 0.02 250); padding: 13px 28px; border-radius: 100px; font-size: 15px; font-weight: 700; border: none; cursor: pointer;" style-hover="background: oklch(72% 0.15 250);">{{ submitLabel }}</button>
-      </form>
-    </sc-if>
-  </section>
-
-  <footer style="padding: 8px 32px 48px; font-size: 13.5px; color: oklch(50% 0.012 250);">
-    © 2026 Attila Nagy
-  </footer>
-
+  </div>
 </div>
 
 </x-dc>
@@ -233,65 +606,118 @@ const EMAILJS_PUBLIC_KEY = 'z_ASmX8Z8xfjZnN77';
 const EMAILJS_SERVICE_ID = 'service_668bfdm';
 const EMAILJS_TEMPLATE_ID = 'template_8ygmu3g';
 const RECAPTCHA_SITE_KEY = '6Le0GmstAAAAAI9GdFKKPm4l3rxC7lPIcy4xlLXV';
+const SCHEME_KEY = 'an-scheme';
 
 class Component extends DCLogic {
-  state = { submitted: false, sending: false, error: false, captchaError: false, counts: { years: 0, engineers: 0, team: 0 } };
+  state = { submitted: false, sending: false, error: false, captchaError: false };
   captchaWidgetId = null;
+
+  /* Resolved scheme, honouring an explicit override before the OS preference. */
+  currentScheme() {
+    const forced = document.documentElement.getAttribute('data-scheme');
+    if (forced === 'dark' || forced === 'light') return forced;
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  setupScheme() {
+    const btn = document.getElementById('scheme-toggle');
+    if (!btn || btn.dataset.bound) return;
+    btn.dataset.bound = '1';
+    btn.addEventListener('click', () => {
+      const next = this.currentScheme() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-scheme', next);
+      try { localStorage.setItem(SCHEME_KEY, next); } catch (err) {}
+    });
+  }
+
+  /* Reveal-on-scroll. Marks elements with `data-in` rather than a class so a
+     React re-render (which owns className) can't undo it. */
+  setupReveals() {
+    const els = [...document.querySelectorAll('[data-reveal]')];
+    if (!els.length) return;
+    document.documentElement.classList.add('js-reveal');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach((el) => el.setAttribute('data-in', ''));
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.setAttribute('data-in', '');
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
+    els.forEach((el) => observer.observe(el));
+  }
+
+  /* Highlights the nav link for whichever section is furthest down the viewport. */
+  setupScrollSpy() {
+    const links = [...document.querySelectorAll('[data-nav]')];
+    const sections = links
+      .map((link) => ({ link, el: document.getElementById(link.getAttribute('data-nav')) }))
+      .filter((pair) => pair.el);
+    if (!sections.length) return;
+
+    const sync = () => {
+      const line = window.scrollY + window.innerHeight * 0.35;
+      let active = null;
+      sections.forEach((pair) => {
+        if (pair.el.offsetTop <= line) active = pair;
+      });
+      sections.forEach((pair) => {
+        if (pair === active) pair.link.setAttribute('data-active', '');
+        else pair.link.removeAttribute('data-active');
+      });
+
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollable > 0 ? Math.min(window.scrollY / scrollable, 1) : 0;
+      document.documentElement.style.setProperty('--progress', String(progress));
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { ticking = false; sync(); });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    sync();
+  }
+
+  setupCaptcha() {
+    let attempts = 0;
+    const render = () => {
+      const container = document.getElementById('recaptcha-container');
+      if (!container || container.childElementCount) return;
+      if (window.grecaptcha && window.grecaptcha.render) {
+        this.captchaWidgetId = window.grecaptcha.render(container, {
+          sitekey: RECAPTCHA_SITE_KEY,
+          theme: this.currentScheme()
+        });
+        return;
+      }
+      attempts += 1;
+      if (attempts < 100) setTimeout(render, 100);
+      else console.warn('reCAPTCHA failed to load.');
+    };
+    render();
+  }
 
   componentDidMount() {
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-
-    let captchaAttempts = 0;
-    const renderCaptcha = () => {
-      const container = document.getElementById('recaptcha-container');
-      if (!container) return;
-      if (window.grecaptcha && window.grecaptcha.render) {
-        this.captchaWidgetId = window.grecaptcha.render(container, { sitekey: RECAPTCHA_SITE_KEY });
-        return;
-      }
-      captchaAttempts += 1;
-      if (captchaAttempts < 100) setTimeout(renderCaptcha, 100);
-      else console.warn('reCAPTCHA failed to load.');
-    };
-    renderCaptcha();
-
-    const targets = { years: 12, engineers: 3, team: 6 };
-    const duration = 1300;
-    const runCount = () => {
-      const start = performance.now();
-      const tick = (now) => {
-        const t = Math.min((now - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - t, 3);
-        this.setState({ counts: {
-          years: Math.round(targets.years * eased),
-          engineers: Math.round(targets.engineers * eased),
-          team: Math.round(targets.team * eased)
-        } });
-        if (t < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    };
-    const el = document.getElementById('stats-row');
-    if (!el) { runCount(); return; }
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) { runCount(); observer.disconnect(); }
-      });
-    }, { threshold: 0.4 });
-    observer.observe(el);
+    this.setupScheme();
+    this.setupReveals();
+    this.setupScrollSpy();
+    this.setupCaptcha();
   }
 
   renderVals() {
     return {
-      stats: [
-        { num: this.state.counts.years + '+', label: 'Years of Experience', color: 'oklch(50% 0.16 250)' },
-        { num: String(this.state.counts.engineers), label: 'Engineers Led per Team', color: 'oklch(50% 0.16 35)' },
-        { num: String(this.state.counts.team), label: 'Person Team, Europe-Scale Platform', color: 'oklch(45% 0.13 145)' }
-      ],
       skillGroups: [
-        { title: 'Frontend', items: ['HTML5','CSS','SCSS','JavaScript','jQuery','React','Vue.js','Bootstrap','Foundation Design'], bg: 'oklch(93% 0.045 250)', fg: 'oklch(38% 0.11 250)', color: 'oklch(48% 0.13 250)' },
-        { title: 'Backend & Data', items: ['PHP','Laravel Framework','MySQL','MongoDB','Elastic Search','REST API','WordPress','Symfony'], bg: 'oklch(93% 0.045 35)', fg: 'oklch(38% 0.11 35)', color: 'oklch(48% 0.13 35)' },
-        { title: 'AI & Emerging', items: ['AI-assisted development with Claude Code','Design with Claude Code Design','AI integrations & automation'], bg: 'oklch(93% 0.045 145)', fg: 'oklch(36% 0.1 145)', color: 'oklch(45% 0.12 145)' }
+        { title: 'Frontend', items: ['HTML5', 'CSS', 'SCSS', 'JavaScript', 'jQuery', 'Vue.js', 'React', 'Bootstrap', 'Foundation'] },
+        { title: 'Backend & data', items: ['PHP', 'Laravel', 'Symfony', 'MySQL', 'MongoDB', 'Elastic Search', 'REST APIs', 'WordPress'] },
+        { title: 'AI-assisted', items: ['Development with Claude Code', 'Design with Claude Code Design', 'Integrations & automation'] }
       ],
       softSkills: ['Team player', 'Communicative', 'Continuous learner', 'Attention to detail', 'Self-motivated'],
       submitted: this.state.submitted,
