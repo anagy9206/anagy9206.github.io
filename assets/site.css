@@ -321,11 +321,15 @@ img { max-width: 100%; display: block; }
 .step h3 { font-size: 17px; font-weight: 500; letter-spacing: -0.01em; margin-top: 9px; }
 .step p { font-size: 15px; line-height: 1.65; color: var(--ink-2); margin-top: 8px; }
 
-/* ---------- services call-out band ----------
-   Deliberately unnumbered: it is an invitation between sections, not a section
-   of the CV, so the 01–04 sequence stays intact. */
+/* ---------- services call-out ----------
+   Used twice: as the CV's numbered Services section, and as the closing band on
+   the services page. The band there carries .sec-cta as well, which drops it
+   from print — a numbered section has to stay, or the CV's 01–05 run breaks. */
 .cta { display: grid; grid-template-columns: minmax(0, 1fr) minmax(250px, 360px); gap: clamp(28px, 5vw, 72px); align-items: start; }
 .cta-line { font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 3.8vw, 46px); line-height: 1.14; letter-spacing: -0.01em; margin-top: 14px; }
+/* Under a section head the head's own margin already does the spacing. */
+.cta-line:first-child { margin-top: 0; }
+.print-url { display: none; }
 .cta-line em { font-style: italic; color: var(--ink-3); }
 .cta .lede { margin-top: 18px; }
 .cta .actions { margin-top: 26px; }
@@ -496,7 +500,10 @@ img { max-width: 100%; display: block; }
      keeping it whole would push it to a fresh sheet and waste one. Breaks are
      held off inside the small blocks instead, and after every heading. */
   .project, .spec-row, .rail-row, .link-row, .job-groups > div, .bullets li,
-  .svc, .step { break-inside: avoid; }
+  .svc, .step, .cta-list li { break-inside: avoid; }
+  .cta-line { font-size: 16pt; }
+  .cta-list li { padding: 7pt 0; }
+  .print-url { display: block; font-family: var(--mono); font-size: 9pt; letter-spacing: .05em; color: var(--accent); margin-top: 8pt; }
   .job-title, .job-org, .job-groups h4, .project h4, .project-meta,
   .svc-title, .step-k, .step h3 { break-after: avoid; }
   .svc { padding: 12pt 0; }
