@@ -322,9 +322,9 @@ img { max-width: 100%; display: block; }
 .step p { font-size: 15px; line-height: 1.65; color: var(--ink-2); margin-top: 8px; }
 
 /* ---------- services call-out ----------
-   Used twice: as the CV's numbered Services section, and as the closing band on
-   the services page. The band there carries .sec-cta as well, which drops it
-   from print — a numbered section has to stay, or the CV's 01–05 run breaks. */
+   The body of the CV's numbered Services section: the pitch and button on the
+   left, the headline services on the right. It prints along with every other
+   numbered section, so the button leaves a bare URL behind in .print-url. */
 .cta { display: grid; grid-template-columns: minmax(0, 1fr) minmax(250px, 360px); gap: clamp(28px, 5vw, 72px); align-items: start; }
 .cta-line { font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 3.8vw, 46px); line-height: 1.14; letter-spacing: -0.01em; margin-top: 14px; }
 /* Under a section head the head's own margin already does the spacing. */
@@ -474,9 +474,8 @@ img { max-width: 100%; display: block; }
 
   body { background: #fff; color: #14130f; font-size: 10.5pt; line-height: 1.45; }
 
-  /* Screen-only furniture. The call-out band is an invitation to click, which
-     paper cannot honour — a printed CV should stay a CV. */
-  .nav, .actions, .form, .sent, .captcha, .foot a, .sec-cta { display: none !important; }
+  /* Screen-only furniture. */
+  .nav, .actions, .form, .sent, .captcha, .foot a { display: none !important; }
 
   /* Reveal-on-scroll leaves anything below the fold at opacity 0 — without
      this the printout is mostly blank pages. */

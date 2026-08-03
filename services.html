@@ -16,6 +16,8 @@
     } catch (e) {}
   })();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -40,7 +42,7 @@
         <a href="index.html#experience">Work</a>
         <a href="index.html#details">Details</a>
         <a href="#top" aria-current="page">Services</a>
-        <a href="index.html#contact">Contact</a>
+        <a href="#contact" data-nav="contact">Contact</a>
         <button type="button" id="scheme-toggle" class="toggle" aria-label="Toggle colour scheme" title="Toggle colour scheme">
           <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"></path></svg>
           <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.4 8.4 0 1 0 10.2 10.2z"></path></svg>
@@ -102,7 +104,7 @@
       <div class="hero-rule"></div>
       <p class="lede">Twelve years of shipping web applications, offered as work you can book. I take a product from database schema to deployed interface, or slot into a team that already has one — the same architecture, code review and delivery discipline I bring to my day job, scoped to what you actually need.</p>
       <div class="actions">
-        <a class="btn" href="index.html#contact">Start a conversation <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg></a>
+        <a class="btn" href="#contact">Start a conversation <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg></a>
         <a class="btn btn-ghost" href="index.html#top">Back to the CV</a>
       </div>
     </header>
@@ -191,29 +193,67 @@
       </div>
     </section>
 
-    <section class="sec sec-cta" data-reveal>
-      <div class="cta">
+    <section class="sec" id="contact">
+      <div class="sec-head">
+        <span class="sec-num">04</span>
+        <h2>Contact</h2>
+        <span class="fill"></span>
+      </div>
+
+      <div class="contact-grid">
         <div>
-          <p class="eyebrow">Next step</p>
-          <p class="cta-line">Tell me what<br /><em>you're building.</em></p>
-          <p class="lede">A short message is enough to start — what the product is, where it stands, and what is in your way. I answer quickly, and I will tell you honestly if it is not a good fit.</p>
-          <div class="actions">
-            <a class="btn" href="index.html#contact">Get in touch <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg></a>
+          <p class="contact-line">Tell me what<br /><em>you're building.</em></p>
+          <p class="lede" style="margin-top: 20px;">A short message is enough to start — what the product is, where it stands, and what is in your way. I answer quickly, and I'll tell you honestly if it isn't a good fit.</p>
+          <div class="links">
+            <a class="link-row" href="mailto:attilan9206@gmail.com">
+              <span class="k">Email</span>
+              <span class="v">attilan9206@gmail.com <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"></path></svg></span>
+            </a>
+            <a class="link-row" href="tel:+40741780195">
+              <span class="k">Phone</span>
+              <span class="v">0741 780 195 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"></path></svg></span>
+            </a>
+            <a class="link-row" href="https://www.linkedin.com/in/nagy-attila-2b057ba0/" target="_blank" rel="noopener">
+              <span class="k">LinkedIn</span>
+              <span class="v">nagy-attila <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"></path></svg></span>
+            </a>
           </div>
         </div>
-        <div class="links">
-          <a class="link-row" href="mailto:attilan9206@gmail.com">
-            <span class="k">Email</span>
-            <span class="v">attilan9206@gmail.com <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"></path></svg></span>
-          </a>
-          <a class="link-row" href="tel:+40741780195">
-            <span class="k">Phone</span>
-            <span class="v">0741 780 195 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"></path></svg></span>
-          </a>
-          <a class="link-row" href="https://www.linkedin.com/in/nagy-attila-2b057ba0/" target="_blank" rel="noopener">
-            <span class="k">LinkedIn</span>
-            <span class="v">nagy-attila <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"></path></svg></span>
-          </a>
+
+        <div>
+          <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+            <div class="sent">
+              <strong>Message sent.</strong>
+              <span>Thanks for reaching out — I'll get back to you shortly.</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+            <form class="form" onSubmit="{{ handleSubmit }}">
+              <div class="field">
+                <label for="f-name">Your name</label>
+                <input id="f-name" type="text" name="from_name" autocomplete="name" required="{{ true }}" />
+              </div>
+              <div class="field">
+                <label for="f-email">Your email</label>
+                <input id="f-email" type="email" name="reply_to" autocomplete="email" required="{{ true }}" />
+              </div>
+              <div class="field">
+                <label for="f-msg">Message</label>
+                <textarea id="f-msg" name="message" rows="5" required="{{ true }}"></textarea>
+              </div>
+              <div class="captcha" id="recaptcha-container"></div>
+              <sc-if value="{{ captchaError }}" hint-placeholder-val="{{ false }}">
+                <p class="form-note">Please confirm you're not a robot.</p>
+              </sc-if>
+              <sc-if value="{{ sendError }}" hint-placeholder-val="{{ false }}">
+                <p class="form-note">Something went wrong — please try again, or email me directly.</p>
+              </sc-if>
+              <button class="btn" type="submit" disabled="{{ sending }}" style="justify-self: start;">
+                {{ submitLabel }}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+              </button>
+            </form>
+          </sc-if>
         </div>
       </div>
     </section>
@@ -228,9 +268,16 @@
 
 </x-dc>
 <script type="text/x-dc" data-dc-script>
+const EMAILJS_PUBLIC_KEY = 'z_ASmX8Z8xfjZnN77';
+const EMAILJS_SERVICE_ID = 'service_668bfdm';
+const EMAILJS_TEMPLATE_ID = 'template_8ygmu3g';
+const RECAPTCHA_SITE_KEY = '6Le0GmstAAAAAI9GdFKKPm4l3rxC7lPIcy4xlLXV';
 const SCHEME_KEY = 'an-scheme';
 
 class Component extends DCLogic {
+  state = { submitted: false, sending: false, error: false, captchaError: false };
+  captchaWidgetId = null;
+
   /* Resolved scheme, honouring an explicit override before the OS preference. */
   currentScheme() {
     const forced = document.documentElement.getAttribute('data-scheme');
@@ -380,10 +427,27 @@ class Component extends DCLogic {
     els.forEach((el) => observer.observe(el));
   }
 
-  /* The hairline under the nav. The CV drives this from its scroll-spy; here
-     there are no in-page nav links to highlight, so it stands on its own. */
-  setupProgress() {
+  /* Highlights the nav link for whichever section is furthest down the viewport,
+     and drives the hairline under the nav. Only Contact is an in-page target
+     here, so unlike the CV the progress bar is updated outside the section
+     check — it has to keep working even with nothing to highlight. */
+  setupScrollSpy() {
+    const links = [...document.querySelectorAll('[data-nav]')];
+    const sections = links
+      .map((link) => ({ link, el: document.getElementById(link.getAttribute('data-nav')) }))
+      .filter((pair) => pair.el);
+
     const sync = () => {
+      const line = window.scrollY + window.innerHeight * 0.35;
+      let active = null;
+      sections.forEach((pair) => {
+        if (pair.el.offsetTop <= line) active = pair;
+      });
+      sections.forEach((pair) => {
+        if (pair === active) pair.link.setAttribute('data-active', '');
+        else pair.link.removeAttribute('data-active');
+      });
+
       const scrollable = document.documentElement.scrollHeight - window.innerHeight;
       const progress = scrollable > 0 ? Math.min(window.scrollY / scrollable, 1) : 0;
       document.documentElement.style.setProperty('--progress', String(progress));
@@ -400,15 +464,76 @@ class Component extends DCLogic {
     sync();
   }
 
+  setupCaptcha() {
+    let attempts = 0;
+    const render = () => {
+      const container = document.getElementById('recaptcha-container');
+      if (!container || container.childElementCount) return;
+      if (window.grecaptcha && window.grecaptcha.render) {
+        this.captchaWidgetId = window.grecaptcha.render(container, {
+          sitekey: RECAPTCHA_SITE_KEY,
+          theme: this.currentScheme()
+        });
+        return;
+      }
+      attempts += 1;
+      if (attempts < 100) setTimeout(render, 100);
+      else console.warn('reCAPTCHA failed to load.');
+    };
+    render();
+  }
+
   componentDidMount() {
+    /* Guarded so a blocked or slow EmailJS CDN can't throw here and take the
+       nav controls below down with it. */
+    try { emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); }
+    catch (err) { console.warn('EmailJS init failed:', err); }
     this.setupScheme();
     this.setupDocActions();
     this.setupReveals();
-    this.setupProgress();
+    this.setupScrollSpy();
+    this.setupCaptcha();
   }
 
   renderVals() {
     return {
+      submitted: this.state.submitted,
+      notSubmitted: !this.state.submitted,
+      sending: this.state.sending,
+      sendError: this.state.error,
+      captchaError: this.state.captchaError,
+      submitLabel: this.state.sending ? 'Sending…' : 'Send message',
+      handleSubmit: (e) => {
+        e.preventDefault();
+        const form = e.target;
+
+        let captchaResponse = '';
+        try {
+          if (this.captchaWidgetId != null && window.grecaptcha) {
+            captchaResponse = grecaptcha.getResponse(this.captchaWidgetId);
+          }
+        } catch (err) {
+          console.error('reCAPTCHA getResponse failed:', err);
+        }
+
+        if (!captchaResponse) {
+          this.setState({ captchaError: true, error: false });
+          return;
+        }
+
+        this.setState({ sending: true, error: false, captchaError: false });
+        emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form)
+          .then(() => {
+            form.reset();
+            try { grecaptcha.reset(this.captchaWidgetId); } catch (err) {}
+            this.setState({ submitted: true, sending: false });
+          })
+          .catch((err) => {
+            console.error('EmailJS send failed:', err);
+            try { grecaptcha.reset(this.captchaWidgetId); } catch (err2) {}
+            this.setState({ sending: false, error: true });
+          });
+      },
       /* PLACEHOLDER COPY — drafted from the CV so the page can be seen working.
          Replace this array with the real service list; the template renders
          whatever is in it, so nothing below needs to change. Keep the teasers
