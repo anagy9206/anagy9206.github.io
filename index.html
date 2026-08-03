@@ -26,452 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
-<style>
-  :root {
-    --paper:    oklch(97.2% 0.006 85);
-    --paper-2:  oklch(94.4% 0.007 85);
-    --ink:      oklch(20% 0.008 70);
-    --ink-2:    oklch(38% 0.008 70);
-    --ink-3:    oklch(55% 0.007 75);
-    --rule:     oklch(88% 0.007 85);
-    --rule-2:   oklch(79% 0.008 85);
-    --accent:   oklch(52% 0.15 42);
-    --serif: 'Newsreader', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
-    --sans:  'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    --mono:  'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-    --gut: clamp(20px, 5vw, 64px);
-    --ease: cubic-bezier(0.22, 1, 0.36, 1);
-    --progress: 0;
-    color-scheme: light;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-scheme="light"]) {
-      --paper:   oklch(16.8% 0.006 70);
-      --paper-2: oklch(21.5% 0.007 70);
-      --ink:     oklch(94% 0.005 85);
-      --ink-2:   oklch(78% 0.006 80);
-      --ink-3:   oklch(62% 0.007 80);
-      --rule:    oklch(28% 0.008 70);
-      --rule-2:  oklch(37% 0.008 70);
-      --accent:  oklch(75% 0.13 48);
-      color-scheme: dark;
-    }
-  }
-  :root[data-scheme="dark"] {
-    --paper:   oklch(16.8% 0.006 70);
-    --paper-2: oklch(21.5% 0.007 70);
-    --ink:     oklch(94% 0.005 85);
-    --ink-2:   oklch(78% 0.006 80);
-    --ink-3:   oklch(62% 0.007 80);
-    --rule:    oklch(28% 0.008 70);
-    --rule-2:  oklch(37% 0.008 70);
-    --accent:  oklch(75% 0.13 48);
-    color-scheme: dark;
-  }
-
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-  body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: var(--sans);
-    font-size: 16px;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    transition: background .5s var(--ease), color .5s var(--ease);
-  }
-  * { box-sizing: border-box; }
-  a { color: inherit; text-decoration: none; }
-  ::selection { background: var(--accent); color: var(--paper); }
-  h1, h2, h3, h4, p, ul, dl, dd, figure { margin: 0; }
-  ul { padding: 0; list-style: none; }
-  img { max-width: 100%; display: block; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
-
-  .shell { max-width: 1120px; margin: 0 auto; padding: 0 var(--gut); }
-
-  /* ---------- nav ---------- */
-  .nav {
-    position: sticky; top: 0; z-index: 50;
-    background: color-mix(in oklab, var(--paper) 82%, transparent);
-    backdrop-filter: saturate(160%) blur(14px);
-    -webkit-backdrop-filter: saturate(160%) blur(14px);
-    border-bottom: 1px solid var(--rule);
-  }
-  .nav::after {
-    content: ''; position: absolute; left: 0; bottom: -1px; height: 1px; width: 100%;
-    background: var(--accent);
-    transform: scaleX(var(--progress)); transform-origin: 0 50%;
-  }
-  .nav-in {
-    max-width: 1120px; margin: 0 auto; padding: 14px var(--gut);
-    display: flex; align-items: center; justify-content: space-between; gap: 20px;
-  }
-  .brand { display: inline-flex; align-items: center; gap: 11px; }
-  .brand-mark {
-    width: 30px; height: 30px; border: 1px solid var(--ink); border-radius: 50%;
-    display: grid; place-items: center;
-    font-family: var(--serif); font-size: 15px; line-height: 1; letter-spacing: .01em;
-    transition: background .35s var(--ease), color .35s var(--ease), transform .5s var(--ease);
-  }
-  .brand:hover .brand-mark { background: var(--ink); color: var(--paper); transform: rotate(-8deg); }
-  .brand-name { font-size: 15px; font-weight: 500; letter-spacing: -0.01em; }
-  .nav-links { display: flex; align-items: center; gap: clamp(14px, 2.4vw, 30px); }
-  .nav-links a {
-    position: relative;
-    font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
-    color: var(--ink-3); padding: 4px 0;
-    transition: color .3s var(--ease);
-  }
-  .nav-links a::after {
-    content: ''; position: absolute; left: 0; bottom: 0; height: 1px; width: 100%;
-    background: currentColor; transform: scaleX(0); transform-origin: 100% 50%;
-    transition: transform .4s var(--ease);
-  }
-  .nav-links a:hover { color: var(--ink); }
-  .nav-links a:hover::after { transform: scaleX(1); transform-origin: 0 50%; }
-  .nav-links a[data-active] { color: var(--accent); }
-  .nav-links a[data-active]::after { transform: scaleX(1); transform-origin: 0 50%; }
-
-  .toggle {
-    width: 30px; height: 30px; padding: 0; margin-left: 2px;
-    display: grid; place-items: center; cursor: pointer;
-    background: transparent; border: 1px solid var(--rule-2); border-radius: 50%;
-    color: var(--ink-2);
-    transition: color .3s var(--ease), border-color .3s var(--ease), transform .5s var(--ease);
-  }
-  .toggle:hover { color: var(--ink); border-color: var(--ink-3); transform: rotate(35deg); }
-  .toggle svg { width: 14px; height: 14px; }
-  .toggle .i-moon { display: none; }
-  :root[data-scheme="dark"] .toggle .i-moon { display: block; }
-  :root[data-scheme="dark"] .toggle .i-sun { display: none; }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-scheme="light"]) .toggle .i-moon { display: block; }
-    :root:not([data-scheme="light"]) .toggle .i-sun { display: none; }
-  }
-
-  /* ---------- document actions ---------- */
-  .util { position: relative; display: inline-flex; }
-  /* Shares the .toggle chrome but not its rotation — a menu trigger that spins
-     reads as a control, not as a disclosure. */
-  .util-btn:hover { transform: none; }
-  .util-btn svg { width: 15px; height: 15px; }
-  .util[data-open] .util-btn { color: var(--ink); border-color: var(--ink-3); }
-
-  .util-menu {
-    position: absolute; top: calc(100% + 12px); right: 0; z-index: 60;
-    min-width: 208px; padding: 6px;
-    background: var(--paper); border: 1px solid var(--rule-2); border-radius: 12px;
-    box-shadow: 0 1px 2px color-mix(in oklab, var(--ink) 6%, transparent),
-                0 14px 34px color-mix(in oklab, var(--ink) 12%, transparent);
-    opacity: 0; visibility: hidden; transform: translateY(-6px) scale(.98); transform-origin: 100% 0;
-    /* visibility flips instantly on open (so the first item can take focus
-       right away) and only after the fade on close. */
-    transition: opacity .28s var(--ease), transform .28s var(--ease), visibility 0s linear .28s;
-  }
-  .util[data-open] .util-menu {
-    opacity: 1; visibility: visible; transform: none;
-    transition: opacity .28s var(--ease), transform .28s var(--ease), visibility 0s;
-  }
-
-  .util-item {
-    display: flex; align-items: center; gap: 11px; width: 100%;
-    padding: 11px 13px; border: 0; border-radius: 8px; cursor: pointer;
-    background: transparent; color: var(--ink-2); text-align: left;
-    font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
-    transition: background .3s var(--ease), color .3s var(--ease);
-  }
-  .util-item + .util-item { margin-top: 1px; }
-  .util-item svg { width: 14px; height: 14px; flex: none; color: var(--ink-3); transition: color .3s var(--ease); }
-  .util-item:hover, .util-item:focus-visible { background: var(--paper-2); color: var(--ink); }
-  .util-item:hover svg, .util-item:focus-visible svg { color: var(--accent); }
-  .util-item .lbl-done { display: none; color: var(--accent); }
-  .util-item[data-done] .lbl-idle { display: none; }
-  .util-item[data-done] .lbl-done { display: inline; }
-  .util-item[data-done] svg { color: var(--accent); }
-
-  /* ---------- shared type ---------- */
-  .eyebrow {
-    font-family: var(--mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
-    color: var(--ink-3);
-  }
-  .lede { font-size: clamp(16.5px, 1.35vw, 18.5px); line-height: 1.62; color: var(--ink-2); max-width: 60ch; }
-
-  /* ---------- hero ---------- */
-  .hero { padding: clamp(52px, 9vw, 104px) 0 clamp(48px, 7vw, 78px); }
-  .portrait-wrap { width: 78px; height: 78px; margin-bottom: 26px; position: relative; }
-  .portrait {
-    width: 78px; height: 78px; border-radius: 50%; object-fit: cover; object-position: center 18%;
-    filter: grayscale(.35) contrast(1.03);
-    transition: filter .6s var(--ease), transform .6s var(--ease);
-  }
-  .portrait-wrap::after {
-    content: ''; position: absolute; inset: -7px; border-radius: 50%;
-    border: 1px solid var(--rule-2);
-    transform: scale(.86); opacity: 0;
-    transition: transform .6s var(--ease), opacity .6s var(--ease);
-  }
-  .portrait-wrap:hover .portrait { filter: none; transform: scale(1.03); }
-  .portrait-wrap:hover::after { transform: scale(1); opacity: 1; }
-
-  .display {
-    font-family: var(--serif); font-weight: 400;
-    font-size: clamp(54px, 11vw, 122px); line-height: .96; letter-spacing: -0.012em;
-    margin: 18px 0 0;
-  }
-  /* overflow clips the rise-in animation; the padding keeps descenders (the "y"
-     in Nagy) from being clipped along with it. */
-  .display .line { display: block; overflow: hidden; padding-bottom: .22em; margin-bottom: -.18em; }
-  .display .line > span { display: block; }
-  .display em { font-style: italic; color: var(--ink-3); }
-
-  .hero-rule { height: 1px; background: var(--rule); margin: clamp(28px, 4vw, 44px) 0 clamp(26px, 3.5vw, 38px); transform-origin: 0 50%; }
-
-  /* Masthead: name on the left, a spec rail filling the right column. */
-  .hero-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(228px, 288px); gap: clamp(30px, 5vw, 72px); }
-  .rail { display: flex; flex-direction: column; justify-content: space-between; text-align: right; }
-  .rail-row { border-top: 1px solid var(--rule); padding-top: 13px; transition: border-color .35s var(--ease); }
-  .rail-row + .rail-row { margin-top: 18px; }
-  .rail-row:hover { border-top-color: var(--ink-3); }
-  .rail dt {
-    font-family: var(--mono); font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase;
-    color: var(--ink-3); margin-bottom: 7px;
-    transition: color .35s var(--ease);
-  }
-  .rail-row:hover dt { color: var(--accent); }
-  .rail dd { margin: 0; font-size: 15px; line-height: 1.4; color: var(--ink); }
-  .rail dd .sub { display: block; font-size: 13.5px; color: var(--ink-3); margin-top: 3px; }
-
-  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
-  .btn {
-    display: inline-flex; align-items: center; gap: 10px;
-    font-family: var(--mono); font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase;
-    padding: 13px 22px; border-radius: 100px; border: 1px solid var(--ink);
-    background: var(--ink); color: var(--paper); cursor: pointer;
-    transition: background .35s var(--ease), color .35s var(--ease), border-color .35s var(--ease), transform .35s var(--ease);
-  }
-  .btn svg { width: 13px; height: 13px; transition: transform .4s var(--ease); }
-  .btn:hover { transform: translateY(-2px); }
-  .btn:hover svg { transform: translateX(4px); }
-  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--rule-2); }
-  .btn-ghost:hover { border-color: var(--ink); }
-  .btn[disabled] { opacity: .55; cursor: progress; transform: none; }
-
-  /* ---------- sections ---------- */
-  .sec { padding: clamp(48px, 6.5vw, 78px) 0; border-top: 1px solid var(--rule); }
-  .sec-head { display: flex; align-items: baseline; gap: 18px; margin-bottom: clamp(34px, 5vw, 52px); }
-  .sec-num { font-family: var(--mono); font-size: 11px; letter-spacing: .16em; color: var(--accent); }
-  .sec-head h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(30px, 4.4vw, 46px); letter-spacing: -0.01em; line-height: 1.05; }
-  .sec-head .fill { flex: 1; height: 1px; background: var(--rule); }
-
-  /* ---------- spec rows ---------- */
-  .spec-row {
-    display: grid; grid-template-columns: minmax(140px, 190px) 1fr; gap: 18px clamp(20px, 4vw, 48px);
-    padding: 22px 0; border-top: 1px solid var(--rule);
-    transition: border-color .35s var(--ease);
-  }
-  .spec-row:first-child { border-top: 0; }
-  .spec-row:hover { border-top-color: var(--rule-2); }
-  .spec-key {
-    font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
-    color: var(--ink-3); padding-top: 4px;
-    transition: color .35s var(--ease), transform .45s var(--ease);
-  }
-  .spec-row:hover .spec-key { color: var(--accent); transform: translateX(3px); }
-  .tags { display: flex; flex-wrap: wrap; align-items: baseline; }
-  .tags span { font-size: 16px; color: var(--ink-2); transition: color .25s var(--ease); }
-  .tags span:hover { color: var(--ink); }
-  .tags span:not(:last-child)::after { content: '·'; margin: 0 .5em; color: var(--rule-2); }
-  .spec-val { font-size: 16px; color: var(--ink-2); }
-  .spec-val strong { font-weight: 500; color: var(--ink); }
-  .spec-note { display: block; font-size: 14.5px; color: var(--ink-3); margin-top: 3px; }
-
-  /* ---------- experience ---------- */
-  .job { display: grid; grid-template-columns: minmax(140px, 190px) 1fr; gap: 18px clamp(20px, 4vw, 48px); padding: clamp(30px, 4vw, 44px) 0; border-top: 1px solid var(--rule); }
-  .job:first-of-type { border-top: 0; padding-top: 0; }
-  .job-when { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); padding-top: 7px; }
-  .job-title { font-family: var(--serif); font-weight: 400; font-size: clamp(22px, 2.6vw, 30px); letter-spacing: -0.008em; line-height: 1.22; }
-  .job-org { font-size: 14.5px; color: var(--accent); margin-top: 6px; }
-  .job-groups { display: grid; gap: 22px; margin-top: 26px; }
-  .job-groups h4 { font-family: var(--mono); font-size: 10.5px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 9px; }
-  .bullets li { position: relative; padding-left: 20px; font-size: 15.5px; line-height: 1.62; color: var(--ink-2); margin-bottom: 7px; }
-  .bullets li::before {
-    content: ''; position: absolute; left: 0; top: .72em; width: 8px; height: 1px; background: var(--rule-2);
-    transition: width .35s var(--ease), background .35s var(--ease);
-  }
-  .bullets li:hover::before { width: 14px; background: var(--accent); }
-
-  .projects { display: grid; gap: 4px; margin-top: 34px; }
-  .project {
-    padding: 20px 0 20px 24px; border-left: 1px solid var(--rule);
-    transition: border-color .4s var(--ease), transform .4s var(--ease);
-  }
-  .project:hover { border-left-color: var(--accent); transform: translateX(4px); }
-  .project h4 { font-size: 17px; font-weight: 500; letter-spacing: -0.01em; }
-  .project-meta { font-family: var(--mono); font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3); margin: 7px 0 10px; }
-  .project p { font-size: 15px; line-height: 1.65; color: var(--ink-2); max-width: 62ch; }
-
-  /* ---------- contact ---------- */
-  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(36px, 6vw, 76px); align-items: start; }
-  .contact-line { font-family: var(--serif); font-weight: 400; font-size: clamp(30px, 4.2vw, 50px); line-height: 1.14; letter-spacing: -0.01em; }
-  .contact-line em { font-style: italic; color: var(--ink-3); }
-  .links { display: grid; gap: 2px; margin-top: 32px; }
-  .link-row {
-    display: flex; align-items: center; justify-content: space-between; gap: 20px;
-    padding: 15px 0; border-top: 1px solid var(--rule);
-    transition: border-color .35s var(--ease);
-  }
-  .link-row:last-child { border-bottom: 1px solid var(--rule); }
-  .link-row:hover { border-top-color: var(--ink-3); }
-  .link-row .k { font-family: var(--mono); font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); }
-  .link-row .v { display: inline-flex; align-items: center; gap: 9px; font-size: 15.5px; transition: color .3s var(--ease); }
-  .link-row .v svg { width: 13px; height: 13px; opacity: 0; transform: translateX(-6px); transition: opacity .35s var(--ease), transform .35s var(--ease); }
-  .link-row:hover .v { color: var(--accent); }
-  .link-row:hover .v svg { opacity: 1; transform: none; }
-
-  .form { display: grid; gap: 22px; }
-  .field label { display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 9px; }
-  .field input, .field textarea {
-    width: 100%; padding: 8px 0 11px; font-family: var(--sans); font-size: 16px; color: var(--ink);
-    background: transparent; border: 0; border-bottom: 1px solid var(--rule-2); border-radius: 0;
-    transition: border-color .35s var(--ease);
-  }
-  .field textarea { resize: vertical; min-height: 108px; line-height: 1.55; }
-  .field input:focus, .field textarea:focus { outline: none; border-bottom-color: var(--accent); }
-  .field input:focus-visible, .field textarea:focus-visible { outline: none; }
-  .form-note { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; color: var(--accent); }
-  .sent { border-left: 1px solid var(--accent); padding: 18px 0 18px 22px; }
-  .sent strong { display: block; font-family: var(--serif); font-size: 24px; font-weight: 400; margin-bottom: 6px; }
-  .sent span { font-size: 15px; color: var(--ink-2); }
-  .captcha { margin-top: 2px; }
-
-  /* ---------- footer ---------- */
-  .foot {
-    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px;
-    padding: 26px 0 44px; border-top: 1px solid var(--rule);
-    font-family: var(--mono); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3);
-  }
-  .foot a { transition: color .3s var(--ease); }
-  .foot a:hover { color: var(--accent); }
-
-  /* ---------- motion ---------- */
-  [id] { scroll-margin-top: 96px; }
-  @keyframes rise { from { transform: translateY(105%); } to { transform: translateY(0); } }
-  @keyframes fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
-  @keyframes wipe { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-
-  .hero .portrait-wrap { animation: fade-up .8s var(--ease) both .05s; }
-  .hero .eyebrow { animation: fade-up .8s var(--ease) both .14s; }
-  .display .line:nth-child(1) > span { animation: rise .95s var(--ease) both .18s; }
-  .display .line:nth-child(2) > span { animation: rise .95s var(--ease) both .27s; }
-  .rail-row:nth-child(1) { animation: fade-up .8s var(--ease) both .34s; }
-  .rail-row:nth-child(2) { animation: fade-up .8s var(--ease) both .41s; }
-  .rail-row:nth-child(3) { animation: fade-up .8s var(--ease) both .48s; }
-  .rail-row:nth-child(4) { animation: fade-up .8s var(--ease) both .55s; }
-  .hero-rule { animation: wipe 1s var(--ease) both .5s; }
-  .hero .lede { animation: fade-up .8s var(--ease) both .6s; }
-  .hero .actions { animation: fade-up .8s var(--ease) both .68s; }
-
-  :root.js-reveal [data-reveal] { opacity: 0; transform: translateY(18px); }
-  :root.js-reveal [data-reveal][data-in] {
-    opacity: 1; transform: none;
-    transition: opacity .75s var(--ease), transform .75s var(--ease);
-  }
-  :root.js-reveal [data-reveal]:nth-child(2)[data-in] { transition-delay: .07s; }
-  :root.js-reveal [data-reveal]:nth-child(3)[data-in] { transition-delay: .14s; }
-  :root.js-reveal [data-reveal]:nth-child(4)[data-in] { transition-delay: .21s; }
-  :root.js-reveal [data-reveal]:nth-child(5)[data-in] { transition-delay: .28s; }
-  :root.js-reveal [data-reveal]:nth-child(6)[data-in] { transition-delay: .35s; }
-
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-    :root.js-reveal [data-reveal] { opacity: 1 !important; transform: none !important; }
-  }
-
-  /* ---------- responsive ---------- */
-  @media (max-width: 860px) {
-    .contact-grid { grid-template-columns: 1fr; }
-    .hero-top { grid-template-columns: 1fr; gap: clamp(30px, 5vw, 42px); }
-    .rail { text-align: left; }
-  }
-  @media (max-width: 700px) {
-    .brand-name { display: none; }
-    .nav-links { gap: 16px; }
-    .spec-row, .job { grid-template-columns: 1fr; gap: 12px; }
-    .job-when, .spec-key { padding-top: 0; }
-  }
-  /* Four section links plus two round controls stop fitting on one line here,
-     so the nav drops to two rows rather than scrolling the page sideways. */
-  @media (max-width: 560px) {
-    .nav-in { flex-wrap: wrap; gap: 0 12px; padding-bottom: 11px; }
-    .nav-links { flex: 1 0 100%; justify-content: space-between; gap: 10px; margin-top: 9px; }
-    .nav-links a { font-size: 10px; letter-spacing: .1em; }
-    .toggle { margin-left: 0; }
-  }
-
-  /* ---------- print / save as PDF ----------
-     Last in the sheet on purpose: the dark-scheme rules above are written as
-     :root:not([data-scheme="light"]), so the print palette has to match that
-     specificity to override a dark-mode print. */
-  @media print {
-    @page { size: A4; margin: 14mm 13mm; }
-
-    :root,
-    :root[data-scheme="dark"],
-    :root:not([data-scheme="light"]) {
-      --paper:   #ffffff;
-      --paper-2: #ffffff;
-      --ink:     #14130f;
-      --ink-2:   #35322c;
-      --ink-3:   #6b665d;
-      --rule:    #dcd8d0;
-      --rule-2:  #bab5ab;
-      --accent:  #8a3b1e;
-      color-scheme: light;
-    }
-
-    body { background: #fff; color: #14130f; font-size: 10.5pt; line-height: 1.45; }
-
-    /* Screen-only furniture. */
-    .nav, .actions, .form, .sent, .captcha, .foot a { display: none !important; }
-
-    /* Reveal-on-scroll leaves anything below the fold at opacity 0 — without
-       this the printout is mostly blank pages. */
-    :root.js-reveal [data-reveal] { opacity: 1 !important; transform: none !important; }
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-
-    .shell { max-width: none; padding: 0; }
-    .hero { padding: 0 0 6pt; }
-    .hero-top { grid-template-columns: minmax(0, 1fr) 210px; gap: 24pt; }
-    .display { font-size: 38pt; margin-top: 8pt; }
-    .display .line { padding-bottom: .18em; margin-bottom: -.14em; }
-    .portrait-wrap, .portrait { width: 62px; height: 62px; }
-    .portrait { filter: grayscale(1) contrast(1.05); }
-    .hero-rule { margin: 12pt 0 10pt; }
-    .lede, .project p { max-width: none; }
-
-    .sec { padding: 14pt 0; }
-    .sec-head { margin-bottom: 12pt; break-after: avoid; }
-    .sec-head h2 { font-size: 20pt; }
-    /* Deliberately not .job — the 2018-present entry is taller than a page, so
-       keeping it whole would push it to a fresh sheet and waste one. Breaks are
-       held off inside the small blocks instead, and after every heading. */
-    .project, .spec-row, .rail-row, .link-row, .job-groups > div, .bullets li { break-inside: avoid; }
-    .job-title, .job-org, .job-groups h4, .project h4, .project-meta { break-after: avoid; }
-    .job { padding: 12pt 0; }
-    .job-title { font-size: 13pt; }
-    .job-groups { gap: 10pt; margin-top: 12pt; }
-    .projects { margin-top: 14pt; }
-    .project { padding: 10pt 0 10pt 12pt; }
-    .bullets li { margin-bottom: 2pt; font-size: 10pt; }
-
-    .contact-grid { grid-template-columns: 1fr; }
-    .contact-line { font-size: 22pt; }
-    .link-row .v svg, .link-row .v::after { display: none; }
-    .foot { padding: 10pt 0 0; }
-  }
-</style>
+<link rel="stylesheet" href="./assets/site.css" />
 </helmet>
 
 <div class="shell-outer">
@@ -486,6 +41,7 @@
         <a href="#skills" data-nav="skills">Skills</a>
         <a href="#experience" data-nav="experience">Work</a>
         <a href="#details" data-nav="details">Details</a>
+        <a href="services.html">Services</a>
         <a href="#contact" data-nav="contact">Contact</a>
         <button type="button" id="scheme-toggle" class="toggle" aria-label="Toggle colour scheme" title="Toggle colour scheme">
           <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"></path></svg>
@@ -683,6 +239,24 @@
             </sc-for>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="sec sec-cta" data-reveal>
+      <div class="cta">
+        <div>
+          <p class="eyebrow">Working together</p>
+          <p class="cta-line">The CV is the record.<br /><em>This is the offer.</em></p>
+          <p class="lede">Everything above, packaged as work you can actually book — from a full application built end to end to a second pair of eyes on an architecture you already have.</p>
+          <div class="actions">
+            <a class="btn" href="services.html">See what I offer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg></a>
+          </div>
+        </div>
+        <ul class="cta-list">
+          <sc-for list="{{ serviceTeasers }}" as="t" hint-placeholder-count="5">
+            <li>{{ t }}</li>
+          </sc-for>
+        </ul>
       </div>
     </section>
 
@@ -995,6 +569,15 @@ class Component extends DCLogic {
         { title: 'AI-assisted', items: ['Development with Claude Code', 'Design with Claude Code Design', 'Integrations & automation'] }
       ],
       softSkills: ['Team player', 'Communicative', 'Continuous learner', 'Attention to detail', 'Self-motivated'],
+      /* Teasers for the call-out band. Keep these in step with the headline
+         services on services.html. */
+      serviceTeasers: [
+        'Web applications, end to end',
+        'Laravel & PHP back-ends',
+        'Vue.js front-ends',
+        'AI integration & automation',
+        'Technical leadership & code review'
+      ],
       submitted: this.state.submitted,
       notSubmitted: !this.state.submitted,
       sending: this.state.sending,

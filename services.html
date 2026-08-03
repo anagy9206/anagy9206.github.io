@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Services — Attila Nagy</title>
+<meta name="description" content="Web applications built end to end: Laravel and PHP back-ends, Vue.js front-ends, AI integration and automation, search and data modelling, technical leadership and code review. Târgu-Mureș, working across Europe.">
+<meta name="theme-color" content="#f4f2ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#191815" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23191815'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='32' fill='%23f4f2ee' text-anchor='middle'%3EAN%3C/text%3E%3C/svg%3E">
+<script>
+  (function () {
+    try {
+      var s = localStorage.getItem('an-scheme');
+      if (s === 'dark' || s === 'light') document.documentElement.setAttribute('data-scheme', s);
+    } catch (e) {}
+  })();
+</script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./assets/site.css" />
+</helmet>
+
+<div class="shell-outer">
+
+  <nav class="nav">
+    <div class="nav-in">
+      <a class="brand" href="index.html#top">
+        <span class="brand-mark">AN</span>
+        <span class="brand-name">Attila Nagy</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html#skills">Skills</a>
+        <a href="index.html#experience">Work</a>
+        <a href="index.html#details">Details</a>
+        <a href="#top" aria-current="page">Services</a>
+        <a href="index.html#contact">Contact</a>
+        <button type="button" id="scheme-toggle" class="toggle" aria-label="Toggle colour scheme" title="Toggle colour scheme">
+          <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"></path></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.4 8.4 0 1 0 10.2 10.2z"></path></svg>
+        </button>
+        <div class="util" id="util">
+          <button type="button" id="util-toggle" class="toggle util-btn" aria-label="Document actions" aria-haspopup="true" aria-expanded="false" aria-controls="util-menu" title="Print, save as PDF or share">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="18.5" cy="12" r="1.6"></circle></svg>
+          </button>
+          <div class="util-menu" id="util-menu" role="menu" aria-labelledby="util-toggle">
+            <button type="button" class="util-item" role="menuitem" data-act="print">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9V3.8h10V9"></path><path d="M7 18H5.2A1.2 1.2 0 0 1 4 16.8v-5.6A1.2 1.2 0 0 1 5.2 10h13.6a1.2 1.2 0 0 1 1.2 1.2v5.6a1.2 1.2 0 0 1-1.2 1.2H17"></path><path d="M7 14.6h10v5.6H7z"></path></svg>
+              <span>Print</span>
+            </button>
+            <button type="button" class="util-item" role="menuitem" data-act="pdf">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v11.2"></path><path d="M7.6 10.4 12 14.7l4.4-4.3"></path><path d="M4.6 17.4v1.9a1.2 1.2 0 0 0 1.2 1.2h12.4a1.2 1.2 0 0 0 1.2-1.2v-1.9"></path></svg>
+              <span>Download PDF</span>
+            </button>
+            <button type="button" class="util-item" role="menuitem" data-act="share">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15.4V4.2"></path><path d="M8 8.2 12 4l4 4.2"></path><path d="M5.4 13.6v5.6a1.2 1.2 0 0 0 1.2 1.2h10.8a1.2 1.2 0 0 0 1.2-1.2v-5.6"></path></svg>
+              <span class="lbl-idle">Share</span>
+              <span class="lbl-done">Link copied</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="shell">
+
+    <header class="hero" id="top">
+      <div class="hero-top">
+        <div>
+          <p class="eyebrow">Services</p>
+          <h1 class="display">
+            <span class="line"><span>What I</span></span>
+            <span class="line"><span><em>can build</em></span></span>
+          </h1>
+        </div>
+        <dl class="rail">
+          <div class="rail-row">
+            <dt>Engagement</dt>
+            <dd>Project or retainer<span class="sub">Fixed scope, or ongoing by the month</span></dd>
+          </div>
+          <div class="rail-row">
+            <dt>Availability</dt>
+            <dd>Selected projects<span class="sub">Alongside my role at Lynx Solutions</span></dd>
+          </div>
+          <div class="rail-row">
+            <dt>Working with</dt>
+            <dd>Founders, agencies, product teams<span class="sub">Remote across Europe</span></dd>
+          </div>
+          <div class="rail-row">
+            <dt>Getting started</dt>
+            <dd>A short scoping call<span class="sub">Written proposal before anything is billed</span></dd>
+          </div>
+        </dl>
+      </div>
+      <div class="hero-rule"></div>
+      <p class="lede">Twelve years of shipping web applications, offered as work you can book. I take a product from database schema to deployed interface, or slot into a team that already has one — the same architecture, code review and delivery discipline I bring to my day job, scoped to what you actually need.</p>
+      <div class="actions">
+        <a class="btn" href="index.html#contact">Start a conversation <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg></a>
+        <a class="btn btn-ghost" href="index.html#top">Back to the CV</a>
+      </div>
+    </header>
+
+    <section class="sec" id="services">
+      <div class="sec-head">
+        <span class="sec-num">01</span>
+        <h2>What I offer</h2>
+        <span class="fill"></span>
+      </div>
+      <div class="svc-list">
+        <sc-for list="{{ services }}" as="s" hint-placeholder-count="6">
+          <article class="svc" data-reveal>
+            <div class="svc-num">{{ s.n }}</div>
+            <div>
+              <h3 class="svc-title">{{ s.title }}</h3>
+              <p class="svc-body">{{ s.body }}</p>
+              <div class="tags">
+                <sc-for list="{{ s.tags }}" as="t" hint-placeholder-count="4">
+                  <span>{{ t }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </section>
+
+    <section class="sec" id="engagement">
+      <div class="sec-head">
+        <span class="sec-num">02</span>
+        <h2>Engagement</h2>
+        <span class="fill"></span>
+      </div>
+      <div class="spec">
+        <div class="spec-row" data-reveal>
+          <div class="spec-key">Project work</div>
+          <div class="spec-val"><strong>Fixed scope, fixed quote</strong><span class="spec-note">A defined piece of work with an agreed deliverable and timeline. Priced after scoping, not before.</span></div>
+        </div>
+        <div class="spec-row" data-reveal>
+          <div class="spec-key">Ongoing</div>
+          <div class="spec-val"><strong>Monthly retainer</strong><span class="spec-note">A reserved block of hours each month for continuous development, maintenance and support.</span></div>
+        </div>
+        <div class="spec-row" data-reveal>
+          <div class="spec-key">Consulting</div>
+          <div class="spec-val"><strong>By the hour or day</strong><span class="spec-note">Architecture reviews, code audits and second opinions, where the deliverable is a written recommendation.</span></div>
+        </div>
+        <div class="spec-row" data-reveal>
+          <div class="spec-key">How we work</div>
+          <div class="spec-val"><strong>Remote, in your workflow</strong><span class="spec-note">Your repository, your board, your review process. Weekly written updates and a direct line to me — not an account manager.</span></div>
+        </div>
+        <div class="spec-row" data-reveal>
+          <div class="spec-key">Languages</div>
+          <div class="spec-val"><strong>English</strong><span class="spec-note">Advanced · Hungarian and Romanian, native</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="process">
+      <div class="sec-head">
+        <span class="sec-num">03</span>
+        <h2>How it runs</h2>
+        <span class="fill"></span>
+      </div>
+      <div class="steps">
+        <div class="step" data-reveal>
+          <p class="step-k">Step 01</p>
+          <h3>Scoping call</h3>
+          <p>Thirty minutes on what you are building, what already exists and what "done" looks like. No charge, no obligation.</p>
+        </div>
+        <div class="step" data-reveal>
+          <p class="step-k">Step 02</p>
+          <h3>Written proposal</h3>
+          <p>Scope, approach, timeline and price in writing. If the architecture needs a decision made first, that decision is part of the proposal.</p>
+        </div>
+        <div class="step" data-reveal>
+          <p class="step-k">Step 03</p>
+          <h3>Build in the open</h3>
+          <p>Work lands in small, reviewable increments in your repository. You see progress weekly, not at the end.</p>
+        </div>
+        <div class="step" data-reveal>
+          <p class="step-k">Step 04</p>
+          <h3>Handover</h3>
+          <p>Documented, tested and deployed, with the context your team needs to keep going. Support afterwards if you want it.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec sec-cta" data-reveal>
+      <div class="cta">
+        <div>
+          <p class="eyebrow">Next step</p>
+          <p class="cta-line">Tell me what<br /><em>you're building.</em></p>
+          <p class="lede">A short message is enough to start — what the product is, where it stands, and what is in your way. I answer quickly, and I will tell you honestly if it is not a good fit.</p>
+          <div class="actions">
+            <a class="btn" href="index.html#contact">Get in touch <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg></a>
+          </div>
+        </div>
+        <div class="links">
+          <a class="link-row" href="mailto:attilan9206@gmail.com">
+            <span class="k">Email</span>
+            <span class="v">attilan9206@gmail.com <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"></path></svg></span>
+          </a>
+          <a class="link-row" href="tel:+40741780195">
+            <span class="k">Phone</span>
+            <span class="v">0741 780 195 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"></path></svg></span>
+          </a>
+          <a class="link-row" href="https://www.linkedin.com/in/nagy-attila-2b057ba0/" target="_blank" rel="noopener">
+            <span class="k">LinkedIn</span>
+            <span class="v">nagy-attila <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"></path></svg></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <span>© 2026 Attila Nagy</span>
+      <a href="index.html#top">Back to the CV ↑</a>
+    </footer>
+
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const SCHEME_KEY = 'an-scheme';
+
+class Component extends DCLogic {
+  /* Resolved scheme, honouring an explicit override before the OS preference. */
+  currentScheme() {
+    const forced = document.documentElement.getAttribute('data-scheme');
+    if (forced === 'dark' || forced === 'light') return forced;
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  setupScheme() {
+    const btn = document.getElementById('scheme-toggle');
+    if (!btn || btn.dataset.bound) return;
+    btn.dataset.bound = '1';
+    btn.addEventListener('click', () => {
+      const next = this.currentScheme() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-scheme', next);
+      try { localStorage.setItem(SCHEME_KEY, next); } catch (err) {}
+    });
+  }
+
+  /* Print, save-as-PDF and share, behind the nav's "⋯" menu — the same control
+     as the CV, differing only in the filename it hands the print dialog. */
+  setupDocActions() {
+    const wrap = document.getElementById('util');
+    const btn = document.getElementById('util-toggle');
+    const menu = document.getElementById('util-menu');
+    if (!wrap || !btn || !menu || wrap.dataset.bound) return;
+    wrap.dataset.bound = '1';
+
+    const items = [...menu.querySelectorAll('.util-item')];
+    const isOpen = () => wrap.hasAttribute('data-open');
+    const open = () => {
+      wrap.setAttribute('data-open', '');
+      btn.setAttribute('aria-expanded', 'true');
+    };
+    const close = (refocus) => {
+      wrap.removeAttribute('data-open');
+      btn.setAttribute('aria-expanded', 'false');
+      if (refocus) btn.focus();
+    };
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isOpen()) close(false);
+      else { open(); items[0] && items[0].focus(); }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (isOpen() && !wrap.contains(e.target)) close(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen()) close(true);
+    });
+
+    /* Roving focus, so the menu behaves like one for keyboard users. */
+    menu.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+      e.preventDefault();
+      const at = items.indexOf(document.activeElement);
+      const step = e.key === 'ArrowDown' ? 1 : -1;
+      const next = items[(at + step + items.length) % items.length];
+      next && next.focus();
+    });
+
+    /* Both print paths go through the browser dialog. For the PDF one the
+       document title is swapped first, because that is what every browser
+       offers as the default filename in "Save as PDF". */
+    const pageTitle = document.title;
+    const printDoc = (filename) => {
+      if (filename) document.title = filename;
+      /* Always restores the title captured at setup, never whatever is on the
+         document now — a browser that skips afterprint would otherwise make the
+         swapped title permanent on the second print. */
+      const restore = () => { document.title = pageTitle; };
+      window.addEventListener('afterprint', restore, { once: true });
+      setTimeout(restore, 12000);
+      requestAnimationFrame(() => window.print());
+    };
+
+    const flag = (item) => {
+      item.setAttribute('data-done', '');
+      setTimeout(() => item.removeAttribute('data-done'), 2200);
+    };
+
+    const legacyCopy = (url, done) => {
+      const field = document.createElement('textarea');
+      field.value = url;
+      field.setAttribute('readonly', '');
+      field.style.cssText = 'position:fixed;top:-1000px;opacity:0;';
+      document.body.appendChild(field);
+      field.select();
+      try { document.execCommand('copy'); done(); } catch (err) { console.warn('Copy failed:', err); }
+      field.remove();
+    };
+
+    const copyLink = (item) => {
+      const url = window.location.href;
+      const done = () => flag(item);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(done).catch(() => legacyCopy(url, done));
+        return;
+      }
+      legacyCopy(url, done);
+    };
+
+    const share = (item) => {
+      const data = {
+        title: 'Services — Attila Nagy',
+        text: 'Web applications built end to end — Laravel, Vue.js, AI integration and automation.',
+        url: window.location.href
+      };
+      if (navigator.share) {
+        navigator.share(data)
+          .then(() => close(false))
+          /* A dismissed share sheet is not an error worth falling back on. */
+          .catch((err) => { if (!err || err.name !== 'AbortError') copyLink(item); });
+        return;
+      }
+      copyLink(item);
+    };
+
+    items.forEach((item) => {
+      item.addEventListener('click', () => {
+        const act = item.getAttribute('data-act');
+        if (act === 'share') { share(item); return; }
+        close(false);
+        printDoc(act === 'pdf' ? 'Attila Nagy — Services' : '');
+      });
+    });
+  }
+
+  /* Reveal-on-scroll. Marks elements with `data-in` rather than a class so a
+     React re-render (which owns className) can't undo it. */
+  setupReveals() {
+    const els = [...document.querySelectorAll('[data-reveal]')];
+    if (!els.length) return;
+    document.documentElement.classList.add('js-reveal');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach((el) => el.setAttribute('data-in', ''));
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.setAttribute('data-in', '');
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
+    els.forEach((el) => observer.observe(el));
+  }
+
+  /* The hairline under the nav. The CV drives this from its scroll-spy; here
+     there are no in-page nav links to highlight, so it stands on its own. */
+  setupProgress() {
+    const sync = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollable > 0 ? Math.min(window.scrollY / scrollable, 1) : 0;
+      document.documentElement.style.setProperty('--progress', String(progress));
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { ticking = false; sync(); });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    sync();
+  }
+
+  componentDidMount() {
+    this.setupScheme();
+    this.setupDocActions();
+    this.setupReveals();
+    this.setupProgress();
+  }
+
+  renderVals() {
+    return {
+      /* PLACEHOLDER COPY — drafted from the CV so the page can be seen working.
+         Replace this array with the real service list; the template renders
+         whatever is in it, so nothing below needs to change. Keep the teasers
+         in `serviceTeasers` on index.html in step with the headlines here. */
+      services: [
+        {
+          n: '01',
+          title: 'Web applications, end to end',
+          body: 'A product built from the database up: schema design, a Laravel API, a Vue.js interface on top of it, and the deployment that puts it in front of users. One person accountable for the whole stack, so nothing falls between the front-end and the back-end.',
+          tags: ['Laravel', 'Vue.js', 'MySQL', 'MongoDB', 'REST APIs']
+        },
+        {
+          n: '02',
+          title: 'Laravel & PHP back-ends',
+          body: 'APIs, business logic and data models for an existing product or a new one. Includes the parts that are easy to skip — migrations, queue workers, integration tests and the third-party integrations that always take longer than expected.',
+          tags: ['Laravel', 'Symfony', 'PHP', 'Microservices', 'Integration & unit tests']
+        },
+        {
+          n: '03',
+          title: 'Vue.js front-ends',
+          body: 'Interfaces built against an API you already have, or one I build alongside it. Component structure that survives the second year of the project, and UI/UX decisions made with the person who has to use the screen in mind.',
+          tags: ['Vue.js', 'JavaScript', 'SCSS', 'Bootstrap', 'UI/UX']
+        },
+        {
+          n: '04',
+          title: 'AI integration & automation',
+          body: 'Putting AI where it earns its place in a product — drafting, extraction, classification, search — and automating the internal work that is currently done by hand. I work with these tools daily and can tell you where they help and where they are still a liability.',
+          tags: ['LLM integrations', 'Workflow automation', 'AI-assisted development']
+        },
+        {
+          n: '05',
+          title: 'Search & data modelling',
+          body: 'Elastic Search implementation and query tuning, and the database structures underneath it. Useful when a product has outgrown a LIKE query, or when the schema decided early on has started to bite.',
+          tags: ['Elastic Search', 'MySQL', 'MongoDB', 'Query optimisation']
+        },
+        {
+          n: '06',
+          title: 'Technical leadership & code review',
+          body: 'Architecture review, code audits and mentoring for a team that has the developers but not the senior voice. I lead a team day to day — the same code review, task documentation and delivery rhythm, applied to your project.',
+          tags: ['Architecture review', 'Code review', 'Mentoring', 'Agile delivery']
+        }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>
