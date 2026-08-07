@@ -321,13 +321,15 @@
   .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(36px, 6vw, 76px); align-items: start; }
   .contact-line { font-family: var(--serif); font-weight: 400; font-size: clamp(30px, 4.2vw, 50px); line-height: 1.14; letter-spacing: -0.01em; }
   .contact-line em { font-style: italic; color: var(--ink-3); }
-  .links { display: grid; gap: 2px; margin-top: 32px; }
+  /* Closing rule on the group rather than the last row, so it stays put when a
+     print-only row joins the list. */
+  .links { display: grid; gap: 2px; margin-top: 32px; border-bottom: 1px solid var(--rule); }
   .link-row {
     display: flex; align-items: center; justify-content: space-between; gap: 20px;
     padding: 15px 0; border-top: 1px solid var(--rule);
     transition: border-color .35s var(--ease);
   }
-  .link-row:last-child { border-bottom: 1px solid var(--rule); }
+  .print-only { display: none; }
   .link-row:hover { border-top-color: var(--ink-3); }
   .link-row .k { font-family: var(--mono); font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); }
   .link-row .v { display: inline-flex; align-items: center; gap: 9px; font-size: 15.5px; transition: color .3s var(--ease); }
@@ -477,6 +479,8 @@
     .contact-grid { grid-template-columns: 1fr; }
     .contact-line { font-size: 22pt; }
     .link-row .v svg, .link-row .v::after { display: none; }
+    /* The printout leaves the site behind, so it carries the address back. */
+    .link-row.print-only { display: flex; }
     .foot { padding: 10pt 0 0; }
   }
 </style>
@@ -723,6 +727,10 @@
             <a class="link-row" href="https://www.linkedin.com/in/nagy-attila-2b057ba0/" target="_blank" rel="noopener">
               <span class="k">LinkedIn</span>
               <span class="v">nagy-attila <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"></path></svg></span>
+            </a>
+            <a class="link-row print-only" href="https://anagy9206.github.io/">
+              <span class="k">Online CV</span>
+              <span class="v">anagy9206.github.io</span>
             </a>
           </div>
         </div>
