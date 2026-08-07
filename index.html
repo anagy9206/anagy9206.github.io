@@ -225,6 +225,12 @@
   .display .line > span { display: block; }
   .display em { font-style: italic; color: var(--ink-3); }
 
+  .tagline {
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: clamp(17px, 1.7vw, 22px); line-height: 1.45; letter-spacing: -0.005em;
+    color: var(--ink-2); max-width: 42ch; margin: 20px 0 0;
+  }
+
   .hero-rule { height: 1px; background: var(--rule); margin: clamp(28px, 4vw, 44px) 0 clamp(26px, 3.5vw, 38px); transform-origin: 0 50%; }
 
   /* Masthead: name on the left, a spec rail filling the right column. */
@@ -364,6 +370,7 @@
   .hero .eyebrow { animation: fade-up .8s var(--ease) both .14s; }
   .display .line:nth-child(1) > span { animation: rise .95s var(--ease) both .18s; }
   .display .line:nth-child(2) > span { animation: rise .95s var(--ease) both .27s; }
+  .hero .tagline { animation: fade-up .8s var(--ease) both .34s; }
   .rail-row:nth-child(1) { animation: fade-up .8s var(--ease) both .34s; }
   .rail-row:nth-child(2) { animation: fade-up .8s var(--ease) both .41s; }
   .rail-row:nth-child(3) { animation: fade-up .8s var(--ease) both .48s; }
@@ -446,6 +453,7 @@
     .hero-top { grid-template-columns: minmax(0, 1fr) 210px; gap: 24pt; }
     .display { font-size: 38pt; margin-top: 8pt; }
     .display .line { padding-bottom: .18em; margin-bottom: -.14em; }
+    .tagline { font-size: 11pt; margin-top: 8pt; max-width: none; }
     .portrait-wrap, .portrait { width: 62px; height: 62px; }
     .portrait { filter: grayscale(1) contrast(1.05); }
     .hero-rule { margin: 12pt 0 10pt; }
@@ -528,6 +536,7 @@
             <span class="line"><span>Attila</span></span>
             <span class="line"><span>Nagy</span></span>
           </h1>
+          <p class="tagline">From architecture to delivery — full-stack development and team leadership, powered by AI-driven workflows.</p>
         </div>
         <dl class="rail">
           <div class="rail-row">
@@ -633,7 +642,7 @@
             </div>
             <div class="project">
               <h4>AI Tender Document Writing Platform</h4>
-              <p class="project-meta">Laravel · React · Node.js · LangChain · LangSmith · Team of 3 · Developer &amp; Project Manager · 2026</p>
+              <p class="project-meta">Laravel · React · Node.js · LangChain · LangSmith · Team of 3 · Developer &amp; Project Manager</p>
               <p>A platform that helps tender writers draft tender documents faster, using AI to extract information from source tender documents and generate content through custom, prompt-built writing tools. Main point of contact for client communication and split the work across a three-person team. Built the React front-end, the Node.js AI service integrating LLMs via LangChain, with LangSmith for monitoring, and the Laravel backend powering the platform.</p>
             </div>
           </div>
