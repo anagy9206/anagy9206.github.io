@@ -321,13 +321,15 @@
   .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(36px, 6vw, 76px); align-items: start; }
   .contact-line { font-family: var(--serif); font-weight: 400; font-size: clamp(30px, 4.2vw, 50px); line-height: 1.14; letter-spacing: -0.01em; }
   .contact-line em { font-style: italic; color: var(--ink-3); }
-  .links { display: grid; gap: 2px; margin-top: 32px; }
+  /* Closing rule on the group rather than the last row, so it stays put when a
+     print-only row joins the list. */
+  .links { display: grid; gap: 2px; margin-top: 32px; border-bottom: 1px solid var(--rule); }
   .link-row {
     display: flex; align-items: center; justify-content: space-between; gap: 20px;
     padding: 15px 0; border-top: 1px solid var(--rule);
     transition: border-color .35s var(--ease);
   }
-  .link-row:last-child { border-bottom: 1px solid var(--rule); }
+  .print-only { display: none; }
   .link-row:hover { border-top-color: var(--ink-3); }
   .link-row .k { font-family: var(--mono); font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); }
   .link-row .v { display: inline-flex; align-items: center; gap: 9px; font-size: 15.5px; transition: color .3s var(--ease); }
@@ -477,6 +479,8 @@
     .contact-grid { grid-template-columns: 1fr; }
     .contact-line { font-size: 22pt; }
     .link-row .v svg, .link-row .v::after { display: none; }
+    /* The printout leaves the site behind, so it carries the address back. */
+    .link-row.print-only { display: flex; }
     .foot { padding: 10pt 0 0; }
   }
 </style>
@@ -500,7 +504,7 @@
           <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.4 8.4 0 1 0 10.2 10.2z"></path></svg>
         </button>
         <div class="util" id="util">
-          <button type="button" id="util-toggle" class="toggle util-btn" aria-label="Document actions" aria-haspopup="true" aria-expanded="false" aria-controls="util-menu" title="Print, save as PDF or share">
+          <button type="button" id="util-toggle" class="toggle util-btn" aria-label="Document actions" aria-haspopup="true" aria-expanded="false" aria-controls="util-menu" title="Print, download the CV or share">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="18.5" cy="12" r="1.6"></circle></svg>
           </button>
           <div class="util-menu" id="util-menu" role="menu" aria-labelledby="util-toggle">
@@ -508,10 +512,10 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9V3.8h10V9"></path><path d="M7 18H5.2A1.2 1.2 0 0 1 4 16.8v-5.6A1.2 1.2 0 0 1 5.2 10h13.6a1.2 1.2 0 0 1 1.2 1.2v5.6a1.2 1.2 0 0 1-1.2 1.2H17"></path><path d="M7 14.6h10v5.6H7z"></path></svg>
               <span>Print</span>
             </button>
-            <button type="button" class="util-item" role="menuitem" data-act="pdf">
+            <a class="util-item" role="menuitem" href="Attila_Nagy_CV.pdf" download="Attila_Nagy_CV.pdf">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v11.2"></path><path d="M7.6 10.4 12 14.7l4.4-4.3"></path><path d="M4.6 17.4v1.9a1.2 1.2 0 0 0 1.2 1.2h12.4a1.2 1.2 0 0 0 1.2-1.2v-1.9"></path></svg>
-              <span>Download PDF</span>
-            </button>
+              <span>Download CV</span>
+            </a>
             <button type="button" class="util-item" role="menuitem" data-act="share">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15.4V4.2"></path><path d="M8 8.2 12 4l4 4.2"></path><path d="M5.4 13.6v5.6a1.2 1.2 0 0 0 1.2 1.2h10.8a1.2 1.2 0 0 0 1.2-1.2v-5.6"></path></svg>
               <span class="lbl-idle">Share</span>
@@ -724,6 +728,10 @@
               <span class="k">LinkedIn</span>
               <span class="v">nagy-attila <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"></path></svg></span>
             </a>
+            <a class="link-row print-only" href="https://anagy9206.github.io/">
+              <span class="k">Online CV</span>
+              <span class="v">anagy9206.github.io</span>
+            </a>
           </div>
         </div>
 
@@ -848,20 +856,10 @@ class Component extends DCLogic {
       next && next.focus();
     });
 
-    /* Both print paths go through the browser dialog. For the PDF one the
-       document title is swapped first, because that is what every browser
-       offers as the default filename in "Save as PDF". */
-    const pageTitle = document.title;
-    const printDoc = (filename) => {
-      if (filename) document.title = filename;
-      /* Always restores the title captured at setup, never whatever is on the
-         document now — a browser that skips afterprint would otherwise make the
-         swapped title permanent on the second print. */
-      const restore = () => { document.title = pageTitle; };
-      window.addEventListener('afterprint', restore, { once: true });
-      setTimeout(restore, 12000);
-      requestAnimationFrame(() => window.print());
-    };
+    /* Print goes through the browser dialog. Downloading the CV does not —
+       "Download CV" is a plain link to the prepared PDF, handled by the
+       browser, so it needs no action here beyond closing the menu. */
+    const printDoc = () => requestAnimationFrame(() => window.print());
 
     const flag = (item) => {
       item.setAttribute('data-done', '');
@@ -910,7 +908,8 @@ class Component extends DCLogic {
         const act = item.getAttribute('data-act');
         if (act === 'share') { share(item); return; }
         close(false);
-        printDoc(act === 'pdf' ? 'Attila Nagy — CV' : '');
+        /* The download link carries no action — let the browser take it. */
+        if (act === 'print') printDoc();
       });
     });
   }
