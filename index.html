@@ -16,6 +16,28 @@
     } catch (e) {}
   })();
 </script>
+<!-- Google Analytics 4.
+     REPLACE 'G-XXXXXXXXXX' below with your own Measurement ID, found in GA4
+     under Admin → Data streams → your web stream. This is the only place the
+     ID appears. While the placeholder is in place nothing is loaded and no
+     request leaves the page, so the site behaves exactly as it does today. -->
+<script>
+  window.GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';
+  window.dataLayer = window.dataLayer || [];
+  /* Defined unconditionally so the track() calls further down stay harmless
+     no-ops when analytics is unconfigured or blocked by the browser. */
+  function gtag() { dataLayer.push(arguments); }
+  (function () {
+    var id = window.GA_MEASUREMENT_ID;
+    if (id === 'G-XXXXXXXXXX' || !/^G-[A-Z0-9]{6,}$/.test(id)) return;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(id);
+    document.head.appendChild(s);
+    gtag('js', new Date());
+    gtag('config', id);
+  })();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>
 <script src="./support.js"></script>
@@ -517,7 +539,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9V3.8h10V9"></path><path d="M7 18H5.2A1.2 1.2 0 0 1 4 16.8v-5.6A1.2 1.2 0 0 1 5.2 10h13.6a1.2 1.2 0 0 1 1.2 1.2v5.6a1.2 1.2 0 0 1-1.2 1.2H17"></path><path d="M7 14.6h10v5.6H7z"></path></svg>
               <span>Print</span>
             </button>
-            <a class="util-item" role="menuitem" href="Attila_Nagy_CV.pdf" download="Attila_Nagy_CV.pdf">
+            <a class="util-item" role="menuitem" data-act="download" href="Attila_Nagy_CV.pdf" download="Attila_Nagy_CV.pdf">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v11.2"></path><path d="M7.6 10.4 12 14.7l4.4-4.3"></path><path d="M4.6 17.4v1.9a1.2 1.2 0 0 0 1.2 1.2h12.4a1.2 1.2 0 0 0 1.2-1.2v-1.9"></path></svg>
               <span>Download CV</span>
             </a>
@@ -794,6 +816,13 @@ const EMAILJS_TEMPLATE_ID = 'template_8ygmu3g';
 const RECAPTCHA_SITE_KEY = '6Le0GmstAAAAAI9GdFKKPm4l3rxC7lPIcy4xlLXV';
 const SCHEME_KEY = 'an-scheme';
 
+/* Analytics events. Guarded so a blocked, failed or unconfigured gtag.js can
+   never break the interaction that reported it. */
+const track = (name, params) => {
+  try { window.gtag && window.gtag('event', name, params || {}); }
+  catch (err) { console.warn('Analytics event failed:', err); }
+};
+
 class Component extends DCLogic {
   state = { submitted: false, sending: false, error: false, captchaError: false };
   captchaWidgetId = null;
@@ -911,10 +940,12 @@ class Component extends DCLogic {
     items.forEach((item) => {
       item.addEventListener('click', () => {
         const act = item.getAttribute('data-act');
-        if (act === 'share') { share(item); return; }
+        if (act === 'share') { track('share', { method: navigator.share ? 'web_share' : 'copy_link' }); share(item); return; }
         close(false);
-        /* The download link carries no action — let the browser take it. */
-        if (act === 'print') printDoc();
+        /* The download link carries no action beyond the event — the browser
+           takes the link itself. */
+        if (act === 'download') track('file_download', { file_name: 'Attila_Nagy_CV.pdf', file_extension: 'pdf' });
+        if (act === 'print') { track('print_cv'); printDoc(); }
       });
     });
   }
@@ -993,6 +1024,23 @@ class Component extends DCLogic {
     render();
   }
 
+  /* Reports the direct-contact routes — the ones that bypass the form, and so
+     are otherwise invisible in analytics. Delegated from the document so it
+     survives a re-render replacing the anchors. */
+  setupLinkTracking() {
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest && e.target.closest('a[href]');
+      if (!link) return;
+      const href = link.getAttribute('href') || '';
+
+      if (href.startsWith('mailto:')) { track('contact_click', { method: 'email' }); return; }
+      if (href.startsWith('tel:')) { track('contact_click', { method: 'phone' }); return; }
+      if (/^https?:/i.test(href) && link.hostname !== window.location.hostname) {
+        track('click', { link_domain: link.hostname, link_url: href, outbound: true });
+      }
+    });
+  }
+
   componentDidMount() {
     /* Guarded so a blocked or slow EmailJS CDN can't throw here and take the
        nav controls below down with it. */
@@ -1003,6 +1051,7 @@ class Component extends DCLogic {
     this.setupReveals();
     this.setupScrollSpy();
     this.setupCaptcha();
+    this.setupLinkTracking();
   }
 
   renderVals() {
@@ -1034,6 +1083,7 @@ class Component extends DCLogic {
 
         if (!captchaResponse) {
           this.setState({ captchaError: true, error: false });
+          track('contact_form_error', { reason: 'captcha' });
           return;
         }
 
@@ -1043,11 +1093,15 @@ class Component extends DCLogic {
             form.reset();
             try { grecaptcha.reset(this.captchaWidgetId); } catch (err) {}
             this.setState({ submitted: true, sending: false });
+            /* `generate_lead` is a GA4 recommended event, so it turns into a
+               conversion in the console without extra configuration. */
+            track('generate_lead', { method: 'contact_form' });
           })
           .catch((err) => {
             console.error('EmailJS send failed:', err);
             try { grecaptcha.reset(this.captchaWidgetId); } catch (err2) {}
             this.setState({ sending: false, error: true });
+            track('contact_form_error', { reason: 'send_failed' });
           });
       }
     };
