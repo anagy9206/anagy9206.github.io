@@ -17,10 +17,11 @@
   })();
 </script>
 <!-- Google Analytics 4, running cookieless.
-     REPLACE 'G-XXXXXXXXXX' below with your own Measurement ID, found in GA4
-     under Admin → Data streams → your web stream. This is the only place the
-     ID appears. While the placeholder is in place nothing is loaded and no
-     request leaves the page, so the site behaves exactly as it does today.
+     The Measurement ID below comes from GA4 under Admin → Data streams → the
+     web stream for this site, and is the only place it appears. Google's own
+     copy-paste snippet is deliberately not used here: it stores a client ID in
+     a cookie, which would put this page back under the ePrivacy consent
+     requirement. Take only the ID from it if the stream is ever recreated.
 
      No cookie is ever written: Consent Mode holds analytics_storage at
      'denied' for the life of the page and client_storage is set to 'none', so
@@ -32,14 +33,16 @@
      Do not add a 'consent' 'update' call granting analytics_storage unless you
      also add a banner: that would start setting cookies. -->
 <script>
-  window.GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';
+  window.GA_MEASUREMENT_ID = 'G-ZP13GZ9PWB';
   window.dataLayer = window.dataLayer || [];
   /* Defined unconditionally so the track() calls further down stay harmless
      no-ops when analytics is unconfigured or blocked by the browser. */
   function gtag() { dataLayer.push(arguments); }
   (function () {
+    /* Blanked or malformed ID: load nothing rather than firing at a bad
+       stream, so a fork with the ID stripped out stays silent. */
     var id = window.GA_MEASUREMENT_ID;
-    if (id === 'G-XXXXXXXXXX' || !/^G-[A-Z0-9]{6,}$/.test(id)) return;
+    if (!/^G-[A-Z0-9]{6,}$/.test(id)) return;
 
     /* Must be queued before the config call below — gtag.js reads the consent
        state when the tag initialises, so a later default would come too late
