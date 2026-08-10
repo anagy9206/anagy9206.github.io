@@ -16,21 +16,32 @@ Full Stack Developer and Team Leader with over a decade of experience delivering
 - CSS
 - SCSS
 - JavaScript
+- TypeScript
 - jQuery
 - React
 - Vue.js
+- Tailwind CSS
 - Bootstrap
 - Foundation Design
 - PHP
 - Laravel Framework
+- Node.js
 - MySQL
+- PostgreSQL
 - MongoDB
+- Redis
+- RabbitMQ
 - Elastic Search
 - REST API
 - WordPress
 - Symfony
+- Git
+- Docker
+- Figma
 - AI-assisted development with Claude Code
 - Design with Claude Code Design
+- LangChain
+- LangSmith
 - AI integrations & automation
 
 **Methodology:** Agile
