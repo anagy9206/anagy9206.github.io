@@ -16,22 +16,22 @@
     } catch (e) {}
   })();
 </script>
-<!-- Google Analytics 4, running cookieless.
+<!-- Google Analytics 4.
      The Measurement ID below comes from GA4 under Admin → Data streams → the
-     web stream for this site, and is the only place it appears. Google's own
-     copy-paste snippet is deliberately not used here: it stores a client ID in
-     a cookie, which would put this page back under the ePrivacy consent
-     requirement. Take only the ID from it if the stream is ever recreated.
+     web stream for this site, and is the only place it appears.
 
-     No cookie is ever written: Consent Mode holds analytics_storage at
-     'denied' for the life of the page and client_storage is set to 'none', so
-     gtag.js sends cookieless pings instead of storing a client ID. Because
-     nothing is placed on the visitor's device, no consent banner is required
-     under ePrivacy. The trade is that reporting is aggregate only — pageviews,
-     country, referrer, device and the custom events below all still arrive,
-     but there are no unique-visitor counts, sessions or returning visitors.
-     Do not add a 'consent' 'update' call granting analytics_storage unless you
-     also add a banner: that would start setting cookies. -->
+     This runs in ordinary cookie-based mode: gtag.js stores a client ID in the
+     _ga cookie, which is what makes unique visitors, sessions and returning
+     visitors resolvable, and what makes the data show up in Realtime and the
+     standard reports at all. It was briefly run cookieless via Consent Mode
+     instead, which avoided the cookie but reported nothing — GA4 only surfaces
+     consent-denied traffic once behavioural modelling kicks in, and that needs
+     roughly a thousand consenting users a day, far beyond this site.
+
+     The cookie is a known, deliberate ePrivacy gap: strictly, storing it needs
+     prior consent. Accepted here for a personal CV page. If that ever needs
+     closing, the fix is a consent banner gating analytics_storage, not a
+     return to cookieless — cookieless is what produced empty reports. -->
 <script>
   window.GA_MEASUREMENT_ID = 'G-ZP13GZ9PWB';
   window.dataLayer = window.dataLayer || [];
@@ -44,25 +44,15 @@
     var id = window.GA_MEASUREMENT_ID;
     if (!/^G-[A-Z0-9]{6,}$/.test(id)) return;
 
-    /* Must be queued before the config call below — gtag.js reads the consent
-       state when the tag initialises, so a later default would come too late
-       to stop the cookie. */
-    gtag('consent', 'default', {
-      ad_storage: 'denied',
-      ad_user_data: 'denied',
-      ad_personalization: 'denied',
-      analytics_storage: 'denied'
-    });
-
     var s = document.createElement('script');
     s.async = true;
     s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(id);
     document.head.appendChild(s);
     gtag('js', new Date());
     gtag('config', id, {
-      /* Belt and braces alongside Consent Mode: refuses cookie storage
-         outright, so a misconfigured consent state still cannot write one. */
-      client_storage: 'none',
+      /* Measurement only. Google Signals drives cross-device tracking and ad
+         personalisation, which a CV page has no use for and which would widen
+         the privacy exposure beyond the analytics cookie. */
       allow_google_signals: false,
       allow_ad_personalization_signals: false
     });
